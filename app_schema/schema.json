@@ -1,0 +1,1052 @@
+schema {
+  query: Query
+  mutation: Mutations
+}
+
+input ApplicationInput {
+  id: ID
+  name: String
+  label: String
+  version: String
+}
+
+type ApplicationType implements Node {
+  ID: ID
+  configuration: ConfigurationType
+  id: ID!
+  label: String
+  name: String
+  version: String
+  dummies(before: String, after: String, first: Int, last: Int, ID: ID, active: Boolean, id: ID, intent: String, purchases: Int): DummyTypeConnection
+  questions(before: String, after: String, first: Int, last: Int, ID: ID, attempts: Int, id: ID, value: String, scope: ID, solutions: ID): QuestionTypeConnection
+}
+
+type ApplicationTypeConnection {
+  pageInfo: PageInfo!
+  edges: [ApplicationTypeEdge]!
+}
+
+type ApplicationTypeEdge {
+  node: ApplicationType
+  cursor: String!
+}
+
+input CategoryInput {
+  id: ID
+  label: String
+  value: String
+  color: String
+}
+
+type CategoryType implements Node {
+  ID: ID
+  color: String
+  id: ID!
+  label: String
+  value: String
+}
+
+type CategoryTypeConnection {
+  pageInfo: PageInfo!
+  edges: [CategoryTypeEdge]!
+}
+
+type CategoryTypeEdge {
+  node: CategoryType
+  cursor: String!
+}
+
+input ClusterInput {
+  id: ID
+  name: String
+  status: String
+}
+
+type ClusterType implements Node {
+  ID: ID
+  id: ID!
+  name: String
+  status: String
+  containers(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, status: String): ContainerTypeConnection
+}
+
+type ClusterTypeConnection {
+  pageInfo: PageInfo!
+  edges: [ClusterTypeEdge]!
+}
+
+type ClusterTypeEdge {
+  node: ClusterType
+  cursor: String!
+}
+
+input CompanyInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type CompanyType implements Node {
+  ID: ID
+  id: ID!
+  jobs(before: String, after: String, first: Int, last: Int, ID: ID, applyEmail: String, applyLink: String, description: String, id: ID, minimumRank: Int, payRange: String, qualifications: String, responsibilities: String): JobTypeConnection
+  managers(before: String, after: String, first: Int, last: Int, ID: ID, admin: Boolean, email: String, id: ID, level: Int, loggedIn: Boolean, manager: Boolean, recruiter: Boolean, rank: ID, subscription: ID): UserTypeConnection
+}
+
+type CompanyTypeConnection {
+  pageInfo: PageInfo!
+  edges: [CompanyTypeEdge]!
+}
+
+type CompanyTypeEdge {
+  node: CompanyType
+  cursor: String!
+}
+
+input CompetencyInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type CompetencyType implements Node {
+  ID: ID
+  id: ID!
+  label: String
+  value: String
+}
+
+type CompetencyTypeConnection {
+  pageInfo: PageInfo!
+  edges: [CompetencyTypeEdge]!
+}
+
+type CompetencyTypeEdge {
+  node: CompetencyType
+  cursor: String!
+}
+
+input ConfigurationInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type ConfigurationType implements Node {
+  ID: ID
+  credentals: CredentialType
+  id: ID!
+  port: Int
+  url: String
+}
+
+type ConfigurationTypeConnection {
+  pageInfo: PageInfo!
+  edges: [ConfigurationTypeEdge]!
+}
+
+type ConfigurationTypeEdge {
+  node: ConfigurationType
+  cursor: String!
+}
+
+input ContainerInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type ContainerType implements Node {
+  ID: ID
+  id: ID!
+  status: String
+  services(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, label: String, type: String, value: String): ServiceTypeConnection
+}
+
+type ContainerTypeConnection {
+  pageInfo: PageInfo!
+  edges: [ContainerTypeEdge]!
+}
+
+type ContainerTypeEdge {
+  node: ContainerType
+  cursor: String!
+}
+
+input CourseInput {
+  id: ID
+  title: String
+  description: String
+  activeStep: Int
+  length: Int
+  totalSteps: Int
+  slug: String
+  cluster: String
+  category: String
+}
+
+type CourseType implements Node {
+  ID: ID
+  activeStep: Int
+  category: CategoryType
+  cluster: ClusterType
+  description: String
+  id: ID!
+  length: Int
+  report: ReportType
+  slug: String
+  status: String
+  title: String
+  totalSteps: Int
+  steps(before: String, after: String, first: Int, last: Int, ID: ID, content: String, id: ID, title: String): StepTypeConnection
+}
+
+type CourseTypeConnection {
+  pageInfo: PageInfo!
+  edges: [CourseTypeEdge]!
+}
+
+type CourseTypeEdge {
+  node: CourseType
+  cursor: String!
+}
+
+type CreateApplicationMutation {
+  application: ApplicationType
+}
+
+type CreateCategoryMutation {
+  category: CategoryType
+}
+
+type CreateClusterMutation {
+  cluster: ClusterType
+}
+
+type CreateCompanyMutation {
+  company: CompanyType
+}
+
+type CreateCompetencyMutation {
+  competency: CompetencyType
+}
+
+type CreateConfigurationMutation {
+  configuration: ConfigurationType
+}
+
+type CreateContainerMutation {
+  container: ContainerType
+}
+
+type CreateCourseMutation {
+  course: CourseType
+  category: CategoryType
+  cluster: ClusterType
+}
+
+type CreateCredentialMutation {
+  credential: CredentialType
+}
+
+type CreateDummyMutation {
+  dummy: DummyType
+}
+
+type CreateJobMutation {
+  job: JobType
+}
+
+type CreateMetricMutation {
+  metric: MetricType
+}
+
+type CreateQuestionMutation {
+  question: QuestionType
+}
+
+type CreateRankMutation {
+  rank: RankType
+}
+
+type CreateReportMutation {
+  report: ReportType
+}
+
+type CreateScopeMutation {
+  scope: ScopeType
+}
+
+type CreateServiceMutation {
+  service: ServiceType
+  application: ApplicationType
+}
+
+type CreateSolutionMutation {
+  solution: SolutionType
+}
+
+type CreateStepMutation {
+  step: StepType
+}
+
+type CreateSubscriptionMutation {
+  subscription: SubscriptionType
+}
+
+type CreateTeamMutation {
+  team: TeamType
+}
+
+type CreateTopicMutation {
+  topic: TopicType
+}
+
+type CreateUniversityMutation {
+  university: UniversityType
+}
+
+type CreateUserMutation {
+  user: UserType
+}
+
+input CredentialInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type CredentialType implements Node {
+  ID: ID
+  id: ID!
+  password: String
+  privateKey: String
+  publicKey: String
+  username: String
+}
+
+type CredentialTypeConnection {
+  pageInfo: PageInfo!
+  edges: [CredentialTypeEdge]!
+}
+
+type CredentialTypeEdge {
+  node: CredentialType
+  cursor: String!
+}
+
+scalar DateTime
+
+type DeleteApplicationMutation {
+  success: Boolean
+}
+
+type DeleteCategoryMutation {
+  success: Boolean
+}
+
+type DeleteClusterMutation {
+  success: Boolean
+}
+
+type DeleteCompanyMutation {
+  success: Boolean
+}
+
+type DeleteCompetencyMutation {
+  success: Boolean
+}
+
+type DeleteConfigurationMutation {
+  success: Boolean
+}
+
+type DeleteContainerMutation {
+  success: Boolean
+}
+
+type DeleteCourseMutation {
+  success: Boolean
+}
+
+type DeleteCredentialMutation {
+  success: Boolean
+}
+
+type DeleteDummyMutation {
+  success: Boolean
+}
+
+type DeleteJobMutation {
+  success: Boolean
+}
+
+type DeleteMetricMutation {
+  success: Boolean
+}
+
+type DeleteQuestionMutation {
+  success: Boolean
+}
+
+type DeleteRankMutation {
+  success: Boolean
+}
+
+type DeleteReportMutation {
+  success: Boolean
+}
+
+type DeleteScopeMutation {
+  success: Boolean
+}
+
+type DeleteServiceMutation {
+  success: Boolean
+}
+
+type DeleteSolutionMutation {
+  success: Boolean
+}
+
+type DeleteStepMutation {
+  success: Boolean
+}
+
+type DeleteSubscriptionMutation {
+  success: Boolean
+}
+
+type DeleteTeamMutation {
+  success: Boolean
+}
+
+type DeleteTopicMutation {
+  success: Boolean
+}
+
+type DeleteUniversityMutation {
+  success: Boolean
+}
+
+type DeleteUserMutation {
+  success: Boolean
+}
+
+input DummyInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type DummyType implements Node {
+  ID: ID
+  active: Boolean
+  id: ID!
+  intent: String
+  purchases: Int
+}
+
+type DummyTypeConnection {
+  pageInfo: PageInfo!
+  edges: [DummyTypeEdge]!
+}
+
+type DummyTypeEdge {
+  node: DummyType
+  cursor: String!
+}
+
+input JobInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type JobType implements Node {
+  ID: ID
+  applyEmail: String
+  applyLink: String
+  description: String
+  id: ID!
+  minimumRank: Int
+  payRange: String
+  qualifications: String
+  responsibilities: String
+  qualified(before: String, after: String, first: Int, last: Int, ID: ID, admin: Boolean, email: String, id: ID, level: Int, loggedIn: Boolean, manager: Boolean, recruiter: Boolean, rank: ID, subscription: ID): UserTypeConnection
+}
+
+type JobTypeConnection {
+  pageInfo: PageInfo!
+  edges: [JobTypeEdge]!
+}
+
+type JobTypeEdge {
+  node: JobType
+  cursor: String!
+}
+
+input MetricInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type MetricType implements Node {
+  ID: ID
+  activeUsers: Int
+  downtime: DateTime
+  id: ID!
+  purchases: Int
+  revenue: Float
+  uptime: DateTime
+}
+
+type MetricTypeConnection {
+  pageInfo: PageInfo!
+  edges: [MetricTypeEdge]!
+}
+
+type MetricTypeEdge {
+  node: MetricType
+  cursor: String!
+}
+
+type Mutations {
+  createApplication(applicationData: ApplicationInput!): CreateApplicationMutation
+  createCategory(categoryData: CategoryInput!): CreateCategoryMutation
+  createCluster(clusterData: ClusterInput!): CreateClusterMutation
+  createCompany(companyData: CompanyInput!): CreateCompanyMutation
+  createCompetency(competencyData: CompetencyInput!): CreateCompetencyMutation
+  createContainer(containerData: ContainerInput!): CreateContainerMutation
+  createConfiguration(configurationData: ConfigurationInput!): CreateConfigurationMutation
+  createCourse(categoryData: CategoryInput, clusterData: ClusterInput, courseData: CourseInput!): CreateCourseMutation
+  createCredential(credentialData: CredentialInput!): CreateCredentialMutation
+  createDummy(dummyData: DummyInput!): CreateDummyMutation
+  createJob(jobData: JobInput!): CreateJobMutation
+  createMetric(metricData: MetricInput!): CreateMetricMutation
+  createQuestion(questionData: QuestionInput!): CreateQuestionMutation
+  createRank(rankData: RankInput!): CreateRankMutation
+  createReport(reportData: ReportInput!): CreateReportMutation
+  createScope(scopeData: ScopeInput!): CreateScopeMutation
+  createService(applicationData: ApplicationInput, serviceData: ServiceInput!): CreateServiceMutation
+  createSolution(solutionData: SolutionInput!): CreateSolutionMutation
+  createStep(stepData: StepInput!): CreateStepMutation
+  createSubscription(subscriptionData: SubscriptionInput!): CreateSubscriptionMutation
+  createTeam(teamData: TeamInput!): CreateTeamMutation
+  createTopic(topicData: TopicInput!): CreateTopicMutation
+  createUniversity(universityData: UniversityInput!): CreateUniversityMutation
+  createUser(userData: UserInput!): CreateUserMutation
+  updateApplication(applicationData: ApplicationInput!): UpdateApplicationMutation
+  updateCluster(clusterData: ClusterInput!): UpdateClusterMutation
+  updateCompany(companyData: CompanyInput!): UpdateCompanyMutation
+  updateCategory(categoryData: CategoryInput!): UpdateCategoryMutation
+  updateCompetency(competencyData: CompetencyInput!): UpdateCompetencyMutation
+  updateConfiguration(configurationData: ConfigurationInput!): UpdateConfigurationMutation
+  updateContainer(containerData: ContainerInput!): UpdateContainerMutation
+  updateCourse(categoryData: CategoryInput, clusterData: ClusterInput, courseData: CourseInput!): UpdateCourseMutation
+  updateCredential(credentialData: CredentialInput!): UpdateCredentialMutation
+  updateDummy(dummyData: DummyInput!): UpdateDummyMutation
+  updateJob(jobData: JobInput!): UpdateJobMutation
+  updateMetric(metricData: MetricInput!): UpdateMetricMutation
+  updateQuestion(questionData: QuestionInput!): UpdateQuestionMutation
+  updateRank(rankData: RankInput!): UpdateRankMutation
+  updateReport(reportData: ReportInput!): UpdateReportMutation
+  updateScope(scopeData: ScopeInput!): UpdateScopeMutation
+  updateService(serviceData: ServiceInput!): UpdateServiceMutation
+  updateServiceAddApplication(applicationData: ApplicationInput, serviceData: ServiceInput!): UpdateServiceAddApplicationMutation
+  updateServiceDeleteApplication(applicationData: ApplicationInput, serviceData: ServiceInput!): UpdateServiceDeleteApplicationMutation
+  updateSolution(solutionData: SolutionInput!): UpdateSolutionMutation
+  updateStep(stepData: StepInput!): UpdateStepMutation
+  updateSubscription(subscriptionData: SubscriptionInput!): UpdateSubscriptionMutation
+  updateTeam(teamData: TeamInput!): UpdateTeamMutation
+  updateTopic(topicData: TopicInput!): UpdateTopicMutation
+  updateUniversity(universityData: UniversityInput!): UpdateUniversityMutation
+  updateUser(userData: UserInput!): UpdateUserMutation
+  deleteApplication(id: ID!): DeleteApplicationMutation
+  deleteCategory(id: ID!): DeleteCategoryMutation
+  deleteCluster(id: ID!): DeleteClusterMutation
+  deleteCompany(id: ID!): DeleteCompanyMutation
+  deleteCompetency(id: ID!): DeleteCompetencyMutation
+  deleteConfiguration(id: ID!): DeleteConfigurationMutation
+  deleteContainer(id: ID!): DeleteContainerMutation
+  deleteCourse(id: ID!): DeleteCourseMutation
+  deleteCredential(id: ID!): DeleteCredentialMutation
+  deleteDummy(id: ID!): DeleteDummyMutation
+  deleteJob(id: ID!): DeleteJobMutation
+  deleteMetric(id: ID!): DeleteMetricMutation
+  deleteQuestion(id: ID!): DeleteQuestionMutation
+  deleteRank(id: ID!): DeleteRankMutation
+  deleteReport(id: ID!): DeleteReportMutation
+  deleteScope(id: ID!): DeleteScopeMutation
+  deleteService(id: ID!): DeleteServiceMutation
+  deleteSolution(id: ID!): DeleteSolutionMutation
+  deleteStep(id: ID!): DeleteStepMutation
+  deleteSubscription(id: ID!): DeleteSubscriptionMutation
+  deleteTeam(id: ID!): DeleteTeamMutation
+  deleteTopic(id: ID!): DeleteTopicMutation
+  deleteUniversity(id: ID!): DeleteUniversityMutation
+  deleteUser(id: ID!): DeleteUserMutation
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  node(id: ID!): Node
+  applications(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, label: String, name: String, version: String, configuration: ID): ApplicationTypeConnection
+  categories(before: String, after: String, first: Int, last: Int, ID: ID, color: String, id: ID, label: String, value: String): CategoryTypeConnection
+  clusters(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, name: String, status: String): ClusterTypeConnection
+  companies(before: String, after: String, first: Int, last: Int, ID: ID, id: ID): CompanyTypeConnection
+  competencies(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, label: String, value: String): CompetencyTypeConnection
+  configurations(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, port: Int, url: String, credentals: ID): ConfigurationTypeConnection
+  containers(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, status: String): ContainerTypeConnection
+  courses(before: String, after: String, first: Int, last: Int, ID: ID, activeStep: Int, description: String, id: ID, length: Int, slug: String, status: String, title: String, totalSteps: Int, category: ID, cluster: ID, report: ID): CourseTypeConnection
+  credentials(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, password: String, privateKey: String, publicKey: String, username: String): CredentialTypeConnection
+  dummies(before: String, after: String, first: Int, last: Int, ID: ID, active: Boolean, id: ID, intent: String, purchases: Int): DummyTypeConnection
+  jobs(before: String, after: String, first: Int, last: Int, ID: ID, applyEmail: String, applyLink: String, description: String, id: ID, minimumRank: Int, payRange: String, qualifications: String, responsibilities: String): JobTypeConnection
+  metrics(before: String, after: String, first: Int, last: Int, ID: ID, activeUsers: Int, downtime: DateTime, id: ID, purchases: Int, revenue: Float, uptime: DateTime): MetricTypeConnection
+  questions(before: String, after: String, first: Int, last: Int, ID: ID, attempts: Int, id: ID, value: String, scope: ID, solutions: ID): QuestionTypeConnection
+  ranks(before: String, after: String, first: Int, last: Int, ID: ID, coursesComplete: Int, flagsObtained: Int, id: ID, position: Int): RankTypeConnection
+  reports(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, score: Int): ReportTypeConnection
+  scopes(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, label: String, value: String, topic: ID): ScopeTypeConnection
+  services(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, label: String, type: String, value: String): ServiceTypeConnection
+  solutions(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, value: String): SolutionTypeConnection
+  steps(before: String, after: String, first: Int, last: Int, ID: ID, content: String, id: ID, title: String): StepTypeConnection
+  subscriptions(before: String, after: String, first: Int, last: Int, ID: ID, active: Boolean, id: ID, stripeCustomerId: String, stripeCustomerPlan: String, stripeCustomerSubscriptionId: String): SubscriptionTypeConnection
+  teams(before: String, after: String, first: Int, last: Int, ID: ID, id: ID): TeamTypeConnection
+  topics(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, label: String, value: String, competency: ID): TopicTypeConnection
+  universities(before: String, after: String, first: Int, last: Int, ID: ID, domain: String, id: ID, team: ID): UniversityTypeConnection
+  users(before: String, after: String, first: Int, last: Int, ID: ID, admin: Boolean, email: String, id: ID, level: Int, loggedIn: Boolean, manager: Boolean, recruiter: Boolean, rank: ID, subscription: ID): UserTypeConnection
+  applicationsList: [ApplicationType]
+  clustersList: [ClusterType]
+  companiesList: [CompanyType]
+  containersList: [ContainerType]
+  configurationsList: [ConfigurationType]
+  credentialsList: [CredentialType]
+  categoriesList: [CategoryType]
+  competenciesList: [CompetencyType]
+  coursesList: [CourseType]
+  dummiesList: [DummyType]
+  jobsList: [JobType]
+  metricsList: [MetricType]
+  questionsList: [QuestionType]
+  ranksList: [RankType]
+  reportsList: [ReportType]
+  scopesList: [ScopeType]
+  servicesList: [ServiceType]
+  solutionsList: [SolutionType]
+  stepsList: [StepType]
+  subscriptionsList: [SubscriptionType]
+  teamsList: [TeamType]
+  topicsList: [TopicType]
+  universitiesList: [UniversityType]
+  usersList: [UserType]
+}
+
+input QuestionInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type QuestionType implements Node {
+  ID: ID
+  attempts: Int
+  id: ID!
+  scope: ScopeType
+  solutions: SolutionType
+  value: String
+}
+
+type QuestionTypeConnection {
+  pageInfo: PageInfo!
+  edges: [QuestionTypeEdge]!
+}
+
+type QuestionTypeEdge {
+  node: QuestionType
+  cursor: String!
+}
+
+input RankInput {
+  id: ID
+  coursesComplete: Int
+  flagsObtained: Int
+  position: Int
+}
+
+type RankType implements Node {
+  ID: ID
+  coursesComplete: Int
+  flagsObtained: Int
+  id: ID!
+  position: Int
+}
+
+type RankTypeConnection {
+  pageInfo: PageInfo!
+  edges: [RankTypeEdge]!
+}
+
+type RankTypeEdge {
+  node: RankType
+  cursor: String!
+}
+
+input ReportInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type ReportType implements Node {
+  ID: ID
+  id: ID!
+  score: Int
+}
+
+type ReportTypeConnection {
+  pageInfo: PageInfo!
+  edges: [ReportTypeEdge]!
+}
+
+type ReportTypeEdge {
+  node: ReportType
+  cursor: String!
+}
+
+input ScopeInput {
+  id: ID
+  label: String
+  value: String
+}
+
+type ScopeType implements Node {
+  ID: ID
+  id: ID!
+  label: String
+  topic: TopicType
+  value: String
+}
+
+type ScopeTypeConnection {
+  pageInfo: PageInfo!
+  edges: [ScopeTypeEdge]!
+}
+
+type ScopeTypeEdge {
+  node: ScopeType
+  cursor: String!
+}
+
+input ServiceInput {
+  id: ID
+  label: String
+  value: String
+  type: String
+}
+
+type ServiceType implements Node {
+  ID: ID
+  applications(before: String, after: String, first: Int, last: Int, ID: ID, id: ID, label: String, name: String, version: String, configuration: ID): ApplicationTypeConnection
+  id: ID!
+  label: String
+  type: String
+  value: String
+}
+
+type ServiceTypeConnection {
+  pageInfo: PageInfo!
+  edges: [ServiceTypeEdge]!
+}
+
+type ServiceTypeEdge {
+  node: ServiceType
+  cursor: String!
+}
+
+input SolutionInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type SolutionType implements Node {
+  ID: ID
+  id: ID!
+  value: String
+}
+
+type SolutionTypeConnection {
+  pageInfo: PageInfo!
+  edges: [SolutionTypeEdge]!
+}
+
+type SolutionTypeEdge {
+  node: SolutionType
+  cursor: String!
+}
+
+input StepInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type StepType implements Node {
+  ID: ID
+  content: String
+  id: ID!
+  title: String
+}
+
+type StepTypeConnection {
+  pageInfo: PageInfo!
+  edges: [StepTypeEdge]!
+}
+
+type StepTypeEdge {
+  node: StepType
+  cursor: String!
+}
+
+input SubscriptionInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type SubscriptionType implements Node {
+  ID: ID
+  active: Boolean
+  id: ID!
+  stripeCustomerId: String
+  stripeCustomerPlan: String
+  stripeCustomerSubscriptionId: String
+}
+
+type SubscriptionTypeConnection {
+  pageInfo: PageInfo!
+  edges: [SubscriptionTypeEdge]!
+}
+
+type SubscriptionTypeEdge {
+  node: SubscriptionType
+  cursor: String!
+}
+
+input TeamInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type TeamType implements Node {
+  ID: ID
+  id: ID!
+  members(before: String, after: String, first: Int, last: Int, ID: ID, admin: Boolean, email: String, id: ID, level: Int, loggedIn: Boolean, manager: Boolean, recruiter: Boolean, rank: ID, subscription: ID): UserTypeConnection
+}
+
+type TeamTypeConnection {
+  pageInfo: PageInfo!
+  edges: [TeamTypeEdge]!
+}
+
+type TeamTypeEdge {
+  node: TeamType
+  cursor: String!
+}
+
+input TopicInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type TopicType implements Node {
+  ID: ID
+  competency: CompetencyType
+  id: ID!
+  label: String
+  value: String
+}
+
+type TopicTypeConnection {
+  pageInfo: PageInfo!
+  edges: [TopicTypeEdge]!
+}
+
+type TopicTypeEdge {
+  node: TopicType
+  cursor: String!
+}
+
+input UniversityInput {
+  id: ID
+  team: ID
+  domain: String
+}
+
+type UniversityType implements Node {
+  ID: ID
+  domain: String
+  id: ID!
+  team: TeamType
+}
+
+type UniversityTypeConnection {
+  pageInfo: PageInfo!
+  edges: [UniversityTypeEdge]!
+}
+
+type UniversityTypeEdge {
+  node: UniversityType
+  cursor: String!
+}
+
+type UpdateApplicationMutation {
+  application: ApplicationType
+}
+
+type UpdateCategoryMutation {
+  category: CategoryType
+}
+
+type UpdateClusterMutation {
+  cluster: ClusterType
+}
+
+type UpdateCompanyMutation {
+  company: CompanyType
+}
+
+type UpdateCompetencyMutation {
+  competency: CompetencyType
+}
+
+type UpdateConfigurationMutation {
+  configuration: ConfigurationType
+}
+
+type UpdateContainerMutation {
+  container: ContainerType
+}
+
+type UpdateCourseMutation {
+  course: CourseType
+  category: CategoryType
+  cluster: ClusterType
+}
+
+type UpdateCredentialMutation {
+  credential: CredentialType
+}
+
+type UpdateDummyMutation {
+  dummy: DummyType
+}
+
+type UpdateJobMutation {
+  job: JobType
+}
+
+type UpdateMetricMutation {
+  metric: MetricType
+}
+
+type UpdateQuestionMutation {
+  question: QuestionType
+}
+
+type UpdateRankMutation {
+  rank: RankType
+}
+
+type UpdateReportMutation {
+  report: ReportType
+}
+
+type UpdateScopeMutation {
+  scope: ScopeType
+}
+
+type UpdateServiceAddApplicationMutation {
+  service: ServiceType
+  application: ApplicationType
+}
+
+type UpdateServiceDeleteApplicationMutation {
+  service: ServiceType
+  application: ApplicationType
+}
+
+type UpdateServiceMutation {
+  service: ServiceType
+  application: ApplicationType
+}
+
+type UpdateSolutionMutation {
+  solution: SolutionType
+}
+
+type UpdateStepMutation {
+  step: StepType
+}
+
+type UpdateSubscriptionMutation {
+  subscription: SubscriptionType
+}
+
+type UpdateTeamMutation {
+  team: TeamType
+}
+
+type UpdateTopicMutation {
+  topic: TopicType
+}
+
+type UpdateUniversityMutation {
+  university: UniversityType
+}
+
+type UpdateUserMutation {
+  user: UserType
+}
+
+input UserInput {
+  id: ID
+  name: String
+  value: String
+}
+
+type UserType implements Node {
+  ID: ID
+  admin: Boolean
+  email: String
+  id: ID!
+  level: Int
+  loggedIn: Boolean
+  manager: Boolean
+  rank: RankType
+  recruiter: Boolean
+  subscription: SubscriptionType
+}
+
+type UserTypeConnection {
+  pageInfo: PageInfo!
+  edges: [UserTypeEdge]!
+}
+
+type UserTypeEdge {
+  node: UserType
+  cursor: String!
+}
