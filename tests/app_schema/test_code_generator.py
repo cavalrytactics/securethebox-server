@@ -15,7 +15,7 @@ def test_loadGlobalData():
 def test_setCurrentDirectory():
     assert c.setCurrentDirectory() == True
 
-def test_generateGraphqlFiles():
+def test_generateGraphqlMutationFiles():
     gbl = globals()
     moduleToImport = f"app_models.graphql.models"
     for modelName, cls in getmembers(importlib.import_module(moduleToImport), isclass):
@@ -27,7 +27,6 @@ def test_generateGraphqlFiles():
                     assert c.setQueryType("mutation") == True
                     assert c.setSubject(modelName.lower()) == True
                     assert c.setOperationName("create"+modelName.capitalize()) == True
-
                     gbl = globals()
                     moduleToImport = f"app_mutations.{pluralField.lower()}.mutations"
                     gbl[moduleToImport] = importlib.import_module(moduleToImport)
@@ -42,5 +41,5 @@ def test_generateGraphqlFiles():
                         c.setInputData()
                         assert c.setQuery() == True
                         assert c.writeFile() == True
-                        assert c.copyToFrontend() == True
+                        assert c.copyToFrontend("../securethebox-client/src/graphql/mutations") == True
                     assert c.resetClass() == True

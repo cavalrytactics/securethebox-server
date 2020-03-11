@@ -30,12 +30,12 @@ class CreateCourseMutation(graphene.Mutation):
         return Category.objects.get(value=value)
 
     @staticmethod
-    def get_cluster_object_by_name(name):
-        return Cluster.objects.get(name=name)
+    def get_cluster_object_by_value(value):
+        return Cluster.objects.get(value=value)
     
     def mutate(self, info, course_data=None,  category_data=None, cluster_data=None):
         category = CreateCourseMutation.get_category_object_by_value(category_data.value)
-        cluster = CreateCourseMutation.get_cluster_object_by_name(cluster_data.name)
+        cluster = CreateCourseMutation.get_cluster_object_by_value(cluster_data.value)
         course = Course(
                 title=course_data.title,
                 description=course_data.description,
@@ -59,7 +59,7 @@ class CreateCourseMutation(graphene.Mutation):
                 course.description = course_data.description
             if category_data.value:
                 course.category = category
-            if cluster_data.name:
+            if cluster_data.value:
                 course.cluster = cluster   
             if course_data.activeStep:
                 course.activeStep = course_data.activeStep
@@ -88,15 +88,15 @@ class UpdateCourseMutation(graphene.Mutation):
     def get_category_object_by_value(value):
         return Category.objects.get(value=value)
     @staticmethod
-    def get_cluster_object_by_name(name):
-        return Cluster.objects.get(name=name)
+    def get_cluster_object_by_value(value):
+        return Cluster.objects.get(value=value)
     @staticmethod
     def get_object(id):
         return Course.objects.get(pk=id)
     def mutate(self, info, course_data=None):
         course = UpdateCourseMutation.get_object(course_data.id)
         category = UpdateCourseMutation.get_category_object_by_value(category_data.value)
-        cluster = UpdateCourseMutation.get_cluster_object_by_name(cluster_data.name)
+        cluster = UpdateCourseMutation.get_cluster_object_by_value(cluster_data.value)
         try:
             course_object = Course.objects.get(pk=course_data.id)
         except Course.DoesNotExist:
@@ -110,7 +110,7 @@ class UpdateCourseMutation(graphene.Mutation):
                 course.description = course_data.description
             if category_data.value:
                 course.category = category
-            if cluster_data.name:
+            if cluster_data.value:
                 course.cluster = cluster   
             if course_data.activeStep:
                 course.activeStep = course_data.activeStep

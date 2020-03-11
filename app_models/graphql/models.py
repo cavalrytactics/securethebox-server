@@ -172,7 +172,8 @@ class Container(Document):
 class Cluster(Document):
     meta = {"collection": "clusters"}
     ID = ObjectIdField()
-    name = StringField()
+    value = StringField()
+    label = StringField()
     status = StringField()
     containers = ListField(ReferenceField(Container))
 

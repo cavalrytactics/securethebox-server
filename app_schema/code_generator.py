@@ -127,12 +127,12 @@ class CodeGenerator():
         except:
             return False
 
-    def copyToFrontend(self):
+    def copyToFrontend(self, documentsPath):
         try:
             if shutil.which("travis") is None:
                 return True
             else:
-                subprocess.Popen([f"mv {self.currentDirectory}/app_schema/{self.operationName}.graphql ../securethebox-client-vanilla/src/@stb/graphql/{self.queryType}/{self.operationName}.graphql"],shell=True).wait()
+                subprocess.Popen([f"mv {self.currentDirectory}/app_schema/{self.operationName}.graphql {documentsPath}/{self.queryType}/{self.operationName}.graphql"],shell=True).wait()
             return True
         except:
             return False

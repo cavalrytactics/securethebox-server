@@ -4,7 +4,8 @@ from app_types.types import ClusterType
 
 class ClusterInput(graphene.InputObjectType):
     id = graphene.ID()
-    name = graphene.String()
+    value = graphene.String()
+    label = graphene.String()
     status = graphene.String()
 
 class CreateClusterMutation(graphene.Mutation):
@@ -13,7 +14,8 @@ class CreateClusterMutation(graphene.Mutation):
         cluster_data = ClusterInput(required=True)
     def mutate(self, info, cluster_data=None):
         cluster = Cluster(
-            name=cluster_data.name,
+            value=cluster_data.value,
+            label=cluster_data.label,
             status=cluster_data.status
         )
         cluster.save()
@@ -28,8 +30,10 @@ class UpdateClusterMutation(graphene.Mutation):
         return Cluster.objects.get(pk=id)
     def mutate(self, info, cluster_data=None):
         cluster = UpdateClusterMutation.get_object(cluster_data.id)
-        if cluster_data.name:
-            cluster.name = cluster_data.name
+        if cluster_data.value:
+            cluster.value = cluster_data.value
+        if cluster_data.label:
+            cluster.label = cluster_data.label
         if cluster_data.status:
             cluster.status = cluster_data.status
         cluster.save()
