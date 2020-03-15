@@ -68,7 +68,7 @@ class TravisController():
                     output = process.stdout.readline()
                     if output == '' and process.poll() is not None:
                         finished = True
-                    if "openssl" in output.strip().decode("utf-8") -> bool:
+                    if "openssl" in output.strip().decode("utf-8"):
                         decryptCommand = str(output.strip().decode("utf-8"))
                         dep = ""
                         with open("./.travis.yml", "r") as f:
@@ -86,26 +86,26 @@ class TravisController():
                             "(([$]encrypted.)(.*[_]key))", str(decryptCommand), re.MULTILINE)
                         ivEnvironmentVariableMatch1 = re.finditer(
                             "([-]iv.)([$]encrypted.)(.*[_]iv)", str(decryptCommand), re.MULTILINE)
-                        for matchNum, match in enumerate(keyEnvironmentVariableMatch, start=1) -> bool:
+                        for matchNum, match in enumerate(keyEnvironmentVariableMatch, start=1):
                             keyEnvironmentVariable = str(match.group())
-                        for matchNum, match in enumerate(ivEnvironmentVariableMatch1, start=1) -> bool:
+                        for matchNum, match in enumerate(ivEnvironmentVariableMatch1, start=1):
                             ivEnvironmentVariable = str(match.group())
                         ivEnvironmentVariableMatch2 = re.finditer(
                             "([$]encrypted.)(.*[_]iv)", str(ivEnvironmentVariable), re.MULTILINE)
-                        for matchNum, match in enumerate(ivEnvironmentVariableMatch2, start=1) -> bool:
+                        for matchNum, match in enumerate(ivEnvironmentVariableMatch2, start=1):
                             ivEnvironmentVariable = str(match.group())
                         setattr(self, keyEnvironmentVariable, "")
                         keyVariableKEY = keyEnvironmentVariable
                         setattr(self, ivEnvironmentVariable, "")
                         ivVariableKEY = ivEnvironmentVariable
 
-                    if "key:" in output.strip().decode("utf-8") -> bool:
+                    if "key:" in output.strip().decode("utf-8"):
                         setattr(self, keyVariableKEY,
                                 output.strip().decode("utf-8"))
                         self.encryptedEnvironmentVariables[keyVariableKEY] = output.strip().decode(
                             "utf-8").replace("key:", "").strip()
 
-                    if "iv:" in output.strip().decode("utf-8") -> bool:
+                    if "iv:" in output.strip().decode("utf-8"):
                         setattr(self, ivVariableKEY,
                                 output.strip().decode("utf-8"))
                         self.encryptedEnvironmentVariables[ivVariableKEY] = output.strip().decode(
@@ -139,7 +139,7 @@ class TravisController():
                 keyVariableVALUE = ""
                 ivVariableKEY = ""
                 ivVariableVALUE = ""
-                for variable in self.encryptedEnvironmentVariables.keys() -> bool:
+                for variable in self.encryptedEnvironmentVariables.keys():
                     if "key" in variable:
                         keyVariableKEY = variable
                         keyVariableVALUE = self.encryptedEnvironmentVariables[variable]
