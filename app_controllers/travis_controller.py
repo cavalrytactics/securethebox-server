@@ -10,26 +10,26 @@ import shutil
 
 
 class TravisController():
-    def __init__(self):
+    def __init__(self) -> bool:
         self.currentDirectory = ""
         self.fileName = ""
         self.encryptedEnvironmentVariables = {}
 
-    def setFileName(self, fileName):
+    def setFileName(self, fileName) -> bool:
         try:
             self.fileName = fileName
             return True
         except:
             return False
     
-    def setCurrentDirectory(self):
+    def setCurrentDirectory(self) -> bool:
         try:
             self.currentDirectory = os.getcwd()
             return True
         except:
             return False
     
-    def tarSecretFiles(self,listOfFiles):
+    def tarSecretFiles(self,listOfFiles) -> bool:
         try:
             self.currentDirectory = os.getcwd()
             os.chdir(self.currentDirectory+"/secrets")
@@ -39,7 +39,7 @@ class TravisController():
         except:
             return False
 
-    def setTravisEncryptFile(self):
+    def setTravisEncryptFile(self) -> bool:
         try:
             fullUncryptedFilePath = f"{self.currentDirectory}/secrets/"
             unencryptedFileName = self.fileName
@@ -68,7 +68,7 @@ class TravisController():
                     output = process.stdout.readline()
                     if output == '' and process.poll() is not None:
                         finished = True
-                    if "openssl" in output.strip().decode("utf-8"):
+                    if "openssl" in output.strip().decode("utf-8") -> bool:
                         decryptCommand = str(output.strip().decode("utf-8"))
                         dep = ""
                         with open("./.travis.yml", "r") as f:
@@ -86,26 +86,26 @@ class TravisController():
                             "(([$]encrypted.)(.*[_]key))", str(decryptCommand), re.MULTILINE)
                         ivEnvironmentVariableMatch1 = re.finditer(
                             "([-]iv.)([$]encrypted.)(.*[_]iv)", str(decryptCommand), re.MULTILINE)
-                        for matchNum, match in enumerate(keyEnvironmentVariableMatch, start=1):
+                        for matchNum, match in enumerate(keyEnvironmentVariableMatch, start=1) -> bool:
                             keyEnvironmentVariable = str(match.group())
-                        for matchNum, match in enumerate(ivEnvironmentVariableMatch1, start=1):
+                        for matchNum, match in enumerate(ivEnvironmentVariableMatch1, start=1) -> bool:
                             ivEnvironmentVariable = str(match.group())
                         ivEnvironmentVariableMatch2 = re.finditer(
                             "([$]encrypted.)(.*[_]iv)", str(ivEnvironmentVariable), re.MULTILINE)
-                        for matchNum, match in enumerate(ivEnvironmentVariableMatch2, start=1):
+                        for matchNum, match in enumerate(ivEnvironmentVariableMatch2, start=1) -> bool:
                             ivEnvironmentVariable = str(match.group())
                         setattr(self, keyEnvironmentVariable, "")
                         keyVariableKEY = keyEnvironmentVariable
                         setattr(self, ivEnvironmentVariable, "")
                         ivVariableKEY = ivEnvironmentVariable
 
-                    if "key:" in output.strip().decode("utf-8"):
+                    if "key:" in output.strip().decode("utf-8") -> bool:
                         setattr(self, keyVariableKEY,
                                 output.strip().decode("utf-8"))
                         self.encryptedEnvironmentVariables[keyVariableKEY] = output.strip().decode(
                             "utf-8").replace("key:", "").strip()
 
-                    if "iv:" in output.strip().decode("utf-8"):
+                    if "iv:" in output.strip().decode("utf-8") -> bool:
                         setattr(self, ivVariableKEY,
                                 output.strip().decode("utf-8"))
                         self.encryptedEnvironmentVariables[ivVariableKEY] = output.strip().decode(
@@ -124,7 +124,7 @@ class TravisController():
             print("You may need to login to Travis")
             return False
 
-    def setTravisUnencryptFile(self):
+    def setTravisUnencryptFile(self) -> bool:
         try:
             fullencryptedFilePath = f"{self.currentDirectory}/secrets/"
             encryptedFileName = f"{self.fileName}.enc"
@@ -139,7 +139,7 @@ class TravisController():
                 keyVariableVALUE = ""
                 ivVariableKEY = ""
                 ivVariableVALUE = ""
-                for variable in self.encryptedEnvironmentVariables.keys():
+                for variable in self.encryptedEnvironmentVariables.keys() -> bool:
                     if "key" in variable:
                         keyVariableKEY = variable
                         keyVariableVALUE = self.encryptedEnvironmentVariables[variable]

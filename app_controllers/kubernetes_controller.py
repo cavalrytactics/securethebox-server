@@ -7,9 +7,10 @@ import yaml
 from kubernetes import client, config
 import re
 import shutil
+from typing import Tuple
 
 class KubernetesController():
-    def __init__(self):
+    def __init__(self) -> bool: 
         self.currentDirectory = ""
         self.serviceName = ""
         self.userName = ""
@@ -27,49 +28,49 @@ class KubernetesController():
         self.challengeGroupId = "1234"
         self.kubernetesPodId = ""
 
-    def setFileName(self, fileName):
+    def setFileName(self, fileName) -> bool:
         try:
             self.fileName = fileName
             return True
         except:
             return False
 
-    def setCurrentDirectory(self):
+    def setCurrentDirectory(self) -> bool:
         try:
             self.currentDirectory = os.getcwd()
             return True
         except:
             return False
 
-    def setClusterName(self, clusterName):
+    def setClusterName(self, clusterName) -> bool:
         try:
             self.googleKubernetesComputeCluster = clusterName
             return True
         except:
             return False
 
-    def setServiceName(self, serviceName):
+    def setServiceName(self, serviceName) -> bool:
         try:
             self.serviceName = serviceName
             return True
         except:
             return False
 
-    def setUserName(self, userName):
+    def setUserName(self, userName) -> bool:
         try:
             self.userName = userName
             return True
         except:
             return False
 
-    def setEmailAddress(self, emailAddress):
+    def setEmailAddress(self, emailAddress) -> bool:
         try:
             self.emailAddress = emailAddress
             return True
         except:
             return False
 
-    def setEnvironmentVariable(self, environmentVariable):
+    def setEnvironmentVariable(self, environmentVariable) -> bool:
         try:
             if os.getenv(environmentVariable) is not None:
                 setattr(self, environmentVariable,
@@ -81,27 +82,27 @@ class KubernetesController():
         except:
             return False
 
-    def setKubernetesDeploymentName(self, kubernetesDeploymentName):
+    def setKubernetesDeploymentName(self, kubernetesDeploymentName) -> bool:
         self.kubernetesDeploymentName = kubernetesDeploymentName
 
-    def setKubernetesDeploymentImage(self, kubernetesDeploymentImage):
+    def setKubernetesDeploymentImage(self, kubernetesDeploymentImage) -> bool:
         self.kubernetesDeploymentImage = kubernetesDeploymentImage
 
-    def setKubernetesPodId(self, kubernetesPodId):
+    def setKubernetesPodId(self, kubernetesPodId) -> bool:
         try:
             self.kubernetesPodId = kubernetesPodId
             return True
         except:
             return False
 
-    def setKubectlAction(self, kubectlAction):
+    def setKubectlAction(self, kubectlAction) -> bool:
         try:
             self.kubectlAction = kubectlAction
             return True
         except:
             return False
 
-    def generateIngressYamlFiles(self):
+    def generateIngressYamlFiles(self) -> bool:
         try:
             fileList = ["01_permissions","02_cluster-role",
                         "03_config", "04_deployment", "05_service", "06_ingress"]
@@ -117,7 +118,7 @@ class KubernetesController():
         except:
             return False
 
-    def generateServiceYamlFiles(self):
+    def generateServiceYamlFiles(self) -> bool:
         try:
             fileList = ["01_cluster-role","01_deployment", "02_service", "03_ingress"]
             for file in fileList:
@@ -132,7 +133,7 @@ class KubernetesController():
         except:
             return False
 
-    def generateAuthenticationYamlFiles(self):
+    def generateAuthenticationYamlFiles(self) -> bool:
         try:
             fileList = ["01_deployment", "02_service", "03_ingress"]
             for file in fileList:
@@ -147,7 +148,7 @@ class KubernetesController():
         except:
             return False
 
-    def generateStorageYamlFiles(self):
+    def generateStorageYamlFiles(self) -> bool:
         try:
             fileList = ["01_persistent-volume", "02_persistent-volume-claim"]
             for file in fileList:
@@ -162,7 +163,7 @@ class KubernetesController():
         except:
             return False
 
-    def generateDnsYamlFiles(self):
+    def generateDnsYamlFiles(self) -> bool:
         try:
             fileList = ["01_cluster-role", "02_deployment"]
             for file in fileList:
@@ -177,7 +178,7 @@ class KubernetesController():
         except:
             return False
 
-    def deleteIngressYamlFiles(self):
+    def deleteIngressYamlFiles(self) -> bool:
         try:
             fileList = ["01_permissions", "02_cluster-role",
                         "03_config", "04_deployment", "05_service", "06_ingress"]
@@ -196,7 +197,7 @@ class KubernetesController():
         except:
             return False
 
-    def deleteServiceYamlFiles(self):
+    def deleteServiceYamlFiles(self) -> bool:
         try:
             fileList = ["01_deployment", "02_service", "03_ingress"]
             for file in fileList:
@@ -214,7 +215,7 @@ class KubernetesController():
         except:
             return False
 
-    def deleteAuthenticationYamlFiles(self):
+    def deleteAuthenticationYamlFiles(self) -> bool:
         try:
             fileList = ["01_deployment", "02_service", "03_ingress"]
             currentDirectory = self.currentDirectory
@@ -233,7 +234,7 @@ class KubernetesController():
         except:
             return False
 
-    def deleteDnsYamlFiles(self):
+    def deleteDnsYamlFiles(self) -> bool:
         try:
             fileList = ["01_cluster-role", "02_deployment"]
             for file in fileList:
@@ -251,7 +252,7 @@ class KubernetesController():
         except:
             return False
 
-    def deleteStorageYamlFiles(self):
+    def deleteStorageYamlFiles(self) -> bool:
         try:
             fileList = ["01_persistent-volume", "02_persistent-volume-claim"]
             for file in fileList:
@@ -269,42 +270,42 @@ class KubernetesController():
         except:
             return False
 
-    def setGoogleProjectId(self, googleProjectId):
+    def setGoogleProjectId(self, googleProjectId) -> bool:
         try:
             self.googleProjectId = googleProjectId
             return True
         except:
             return False
 
-    def setGoogleKubernetesComputeZone(self, googleKubernetesComputeZone):
+    def setGoogleKubernetesComputeZone(self, googleKubernetesComputeZone) -> bool:
         try:
             self.googleKubernetesComputeZone = googleKubernetesComputeZone
             return True
         except:
             return False
 
-    def setGoogleKubernetesComputeCluster(self, googleKubernetesComputeCluster):
+    def setGoogleKubernetesComputeCluster(self, googleKubernetesComputeCluster) -> bool:
         try:
             self.googleKubernetesComputeCluster = googleKubernetesComputeCluster
             return True
         except:
             return False
 
-    def setGoogleKubernetesComputeRegion(self, googleKubernetesComputeRegion):
+    def setGoogleKubernetesComputeRegion(self, googleKubernetesComputeRegion) -> bool:
         try:
             self.googleKubernetesComputeRegion = googleKubernetesComputeRegion
             return True
         except:
             return False
 
-    def setGoogleServiceAccountEmail(self, googleServiceAccountEmail):
+    def setGoogleServiceAccountEmail(self, googleServiceAccountEmail) -> bool:
         try:
             self.googleServiceAccountEmail = googleServiceAccountEmail
             return True
         except:
             return False
 
-    def loadGoogleKubernetesServiceAccount(self):
+    def loadGoogleKubernetesServiceAccount(self) -> bool:
         try:
             subprocess.Popen(
                 [f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName} >> /dev/null 2>&1"], shell=True).wait()
@@ -314,7 +315,7 @@ class KubernetesController():
         except:
             return False
     
-    def setGoogleKubernetesProject(self):
+    def setGoogleKubernetesProject(self) -> bool:
         try:
             subprocess.Popen(
                 [f"gcloud config set project {self.googleProjectId} >> /dev/null 2>&1"], shell=True).wait()
@@ -322,7 +323,7 @@ class KubernetesController():
         except:
             return False
 
-    def createGoogleKubernetesCluster(self):
+    def createGoogleKubernetesCluster(self) -> bool:
         try:
             subprocess.Popen(
                 [f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName} >> /dev/null 2>&1"], shell=True).wait()
@@ -349,7 +350,7 @@ class KubernetesController():
         except:
             return False
 
-    def getGoogleKubernetesClusterCredentials(self):
+    def getGoogleKubernetesClusterCredentials(self) -> bool:
         try:
             subprocess.Popen(
                 [f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName} >> /dev/null 2>&1"], shell=True).wait()
@@ -361,21 +362,21 @@ class KubernetesController():
         except:
             return False
 
-    def createClusterRoleBinding(self):
+    def createClusterRoleBinding(self) -> bool:
         try:
             subprocess.Popen([f"kubectl create clusterrolebinding external-dns --clusterrole=cluster-admin --user=cavalrytacticsinc@gmail.com >> /dev/null 2>&1"], shell=True).wait()
             return True
         except:
             return False
 
-    def deleteClusterRoleBinding(self):
+    def deleteClusterRoleBinding(self) -> bool:
         try:
             subprocess.Popen([f"kubectl delete clusterrolebinding external-dns >> /dev/null 2>&1"], shell=True).wait()
             return True
         except:
             return False
 
-    def deleteGoogleKubernetesCluster(self):
+    def deleteGoogleKubernetesCluster(self) -> bool:
         try:
             subprocess.Popen(
                 [f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName} >> /dev/null 2>&1"], shell=True).wait()
@@ -387,7 +388,7 @@ class KubernetesController():
         except:
             return False
 
-    def helper_deleteOrphanObject(self, objectId, objectType):
+    def helper_deleteOrphanObject(self, objectId, objectType) -> bool:
         print("Deleting:", objectId, objectType)
         if objectType == "firewall-rules":
             subprocess.Popen([f"gcloud compute --project=\"{self.googleProjectId}\" -q firewall-rules delete {objectId}"],shell=True).wait()
@@ -402,7 +403,7 @@ class KubernetesController():
         elif objectType == "addresses":
             subprocess.Popen([f"echo 'y' | gcloud compute --project=\"{self.googleProjectId}\" addresses delete {objectId}"],shell=True).wait()
     
-    def helper_checkValidFirewallRule(self, objectId):
+    def helper_checkValidFirewallRule(self, objectId) -> bool:
         command = ["gcloud",f"--project=\"{self.googleProjectId}\"","compute","firewall-rules","describe",f"\"{objectId}\"","--format=json"]
         out = check_output(command)
         fw_json=json.loads(out)
@@ -417,7 +418,7 @@ class KubernetesController():
             # IP is in use
             return True
         
-    def deleteFirewallRules(self):
+    def deleteFirewallRules(self) -> bool:
         try:
             command = ["gcloud",f"--project={self.googleProjectId}","compute","firewall-rules","list","--format=value(name)",f"--filter=name ~ ^k8s"]
             out = check_output(command)
@@ -431,7 +432,7 @@ class KubernetesController():
         except:
             return False
 
-    def deleteFirewallRulesTest(self):
+    def deleteFirewallRulesTest(self) -> bool:
         try:
             command = ["gcloud",f"--project={self.googleProjectId}","compute","firewall-rules","list","--format=value(name)",f"--filter=name ~ ^k8s"]
             out = check_output(command)
@@ -444,7 +445,7 @@ class KubernetesController():
         except:
             return False
 
-    def deleteStaticIPsStatusReserved(self):
+    def deleteStaticIPsStatusReserved(self) -> bool:
         try:
             command = ["gcloud",f"--project={self.googleProjectId}","compute","addresses","list","--format=value(name)","--filter=STATUS ~ ^RESERVED"]
             out = check_output(command)
@@ -458,7 +459,7 @@ class KubernetesController():
         except:
             return False
 
-    def deleteTargetPools(self):
+    def deleteTargetPools(self) -> bool:
         try:
             command = ["gcloud",f"--project={self.googleProjectId}","compute","target-pools","list","--format=value(name)"]
             out = check_output(command)
@@ -474,7 +475,7 @@ class KubernetesController():
         except:
             return False
 
-    def selectGoogleKubernetesClusterContext(self):
+    def selectGoogleKubernetesClusterContext(self) -> bool:
         try:
             contexts, active_context = config.list_kube_config_contexts()
             if not contexts:
@@ -488,7 +489,7 @@ class KubernetesController():
         except:
             return False
 
-    def manageKubernetesIngressPod(self):
+    def manageKubernetesIngressPod(self) -> bool:
         try:
             subprocess.Popen(
                 [f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/ingress/{self.serviceName}/01_permissions-{self.googleKubernetesComputeCluster}-{self.serviceName}.yml >> /dev/null 2>&1"], shell=True).wait()
@@ -506,7 +507,7 @@ class KubernetesController():
         except:
             return False
 
-    def manageKubernetesStoragePod(self):
+    def manageKubernetesStoragePod(self) -> bool:
         try:
             if self.kubectlAction == "apply":
                 subprocess.Popen(
@@ -523,7 +524,7 @@ class KubernetesController():
         except:
             return False
 
-    def manageKubernetesServicePod(self):
+    def manageKubernetesServicePod(self) -> bool:
         try:
             subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/services/{self.serviceName}/01_cluster-role-{self.googleKubernetesComputeCluster}-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/services/{self.serviceName}/01_deployment-{self.googleKubernetesComputeCluster}-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
@@ -533,7 +534,7 @@ class KubernetesController():
         except:
             return False
     
-    def manageKubernetesAuthenticationPod(self):
+    def manageKubernetesAuthenticationPod(self) -> bool:
         try:
             subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/authentication/{self.serviceName}/01_deployment-{self.googleKubernetesComputeCluster}-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/authentication/{self.serviceName}/02_service-{self.googleKubernetesComputeCluster}-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
@@ -542,7 +543,7 @@ class KubernetesController():
         except:
             return False
 
-    def manageKubernetesDnsPod(self):
+    def manageKubernetesDnsPod(self) -> bool:
         try:
             subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/dns/external-dns/01_cluster-role-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
             subprocess.Popen([f"kubectl {self.kubectlAction} -f {self.currentDirectory}/app_controllers/infrastructure/kubernetes-deployments/dns/external-dns/02_deployment-{self.serviceName}-{self.userName}.yml >> /dev/null 2>&1"], shell=True).wait()
@@ -550,7 +551,7 @@ class KubernetesController():
         except:
             return False
 
-    def getKubernetesPodId(self):
+    def getKubernetesPodId(self) -> Tuple[bool, str]:
         command = ["kubectl", "get", "pods", "-o", "go-template", "--template",
                    "'{{range .items}}{{.metadata.name}}{{\"\\n\"}}{{end}}'"]
         out = check_output(command)
@@ -566,7 +567,7 @@ class KubernetesController():
                     return True, str(pod_id)
             return False, "0"
 
-    def getkubernetesPodStatus(self):
+    def getkubernetesPodStatus(self) ->  Tuple[bool, str]:
         command = ["kubectl", "get", "pod", self.kubernetesPodId, "-o", "json"]
         command_output = check_output(command)
         parsedJSON = json.loads(command_output)
