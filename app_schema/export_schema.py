@@ -6,6 +6,16 @@ from graphql.utils import schema_printer
 import os
 import shutil
 
+"""
+
+Exports schema to frontend directory (securethebox-client)
+
+Run this in the background: 
+watch -n 10 pytest tests/app_schema/test_export_schema.py
+
+"""
+
+
 class AppSchema():
    def __init__(self):
       self.schema = schema_printer.print_schema(schema)

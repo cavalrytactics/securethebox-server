@@ -7,6 +7,12 @@ import pprint
 import subprocess
 import shutil
 
+"""
+
+This code is not complete, but the target goal is to generate boilerplate code for mutations
+
+"""
+
 class CodeGenerator():
     def __init__(self):
         self.currentDirectory = ""

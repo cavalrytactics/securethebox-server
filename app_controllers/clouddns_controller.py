@@ -4,7 +4,6 @@ import os
 from subprocess import check_output
 from os import path
 import yaml
-from kubernetes import client, config
 import re
 import shutil
 import time
@@ -183,7 +182,7 @@ class CloudDnsController():
                 if x in dnsRecord2:
                     subprocess.Popen([f"gcloud dns record-sets transaction add {self.firebasePrimaryIP} {self.firebaseSecondaryIP} --name \"{self.parentDomain}.\" --ttl 300 --type A --zone \"{self.parentManagedZone}\""], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction add {self.firebasePrimaryIP} {self.firebaseSecondaryIP} --name \"www.{self.parentDomain}.\" --ttl 300 --type A --zone \"{self.parentManagedZone}\""], shell=True).wait()
-                    subprocess.Popen([f"gcloud dns record-sets transaction add \"v=spf1 include:_spf.firebasemail.com ~all\" \"firebase={self.firebaseSiteName}\" --name \"{self.parentDomain}.\" --ttl 300 --type TXT --zone \"{self.parentManagedZone}\""], shell=True).wait()
+                    subprocess.Popen([f"gcloud dns record-sets transaction add \"v=spf1 include:_spf.firebasemail.com ~all\" \"firebase={self.firebaseSiteName}\" \"google-site-verification=WluXQlQdBJLd7lvro7D6deTbX3gSp5-EczxiFvKpfQk\" --name \"{self.parentDomain}.\" --ttl 300 --type TXT --zone \"{self.parentManagedZone}\""], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction add \"mail-{self.parentManagedZone}.dkim1._domainkey.firebasemail.com.\" --name \"firebase1._domainkey.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\""], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction add \"mail-{self.parentManagedZone}.dkim2._domainkey.firebasemail.com.\" --name \"firebase2._domainkey.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\""], shell=True).wait()
                     subprocess.Popen([f"gcloud dns record-sets transaction add \"ghs.googlehosted.com.\" --name \"cloud-run.{self.parentDomain}\" --ttl 300 --type CNAME --zone \"{self.parentManagedZone}\""], shell=True).wait()

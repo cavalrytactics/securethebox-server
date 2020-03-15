@@ -1,7 +1,7 @@
 import graphene
 from graphene.relay import Node
 from graphene_mongo.fields import MongoengineConnectionField
-from app_models.graphql.models import (
+from app_models.models import (
     Application,
     Category,
     Cluster,
@@ -26,6 +26,7 @@ from app_models.graphql.models import (
     Topic,
     University,
     User,
+    Vulnerability
 )
 from app_types.types import (
     ApplicationType,
@@ -52,129 +53,135 @@ from app_types.types import (
     TopicType,
     UniversityType,
     UserType,
+    VulnerabilityType
 )
 
-from app_mutations.applications.mutations import (
+from app_mutations.applications import (
     CreateApplicationMutation,
     UpdateApplicationMutation,
     DeleteApplicationMutation,
 )
-from app_mutations.categories.mutations import (
+from app_mutations.categories import (
     CreateCategoryMutation,
     UpdateCategoryMutation,
     DeleteCategoryMutation,
 )
-from app_mutations.clusters.mutations import (
+from app_mutations.clusters import (
     CreateClusterMutation,
     UpdateClusterMutation,
     DeleteClusterMutation,
 )
-from app_mutations.companies.mutations import (
+from app_mutations.companies import (
     CreateCompanyMutation,
     UpdateCompanyMutation,
     DeleteCompanyMutation,
 )
-from app_mutations.competencies.mutations import (
+from app_mutations.competencies import (
     CreateCompetencyMutation,
     UpdateCompetencyMutation,
     DeleteCompetencyMutation,
 )
-from app_mutations.containers.mutations import (
+from app_mutations.containers import (
     CreateContainerMutation,
     UpdateContainerMutation,
     DeleteContainerMutation,
 )
-from app_mutations.configurations.mutations import (
+from app_mutations.configurations import (
     CreateConfigurationMutation,
     UpdateConfigurationMutation,
     DeleteConfigurationMutation,
 )
-from app_mutations.courses.mutations import (
+from app_mutations.courses import (
     CreateCourseMutation,
     UpdateCourseMutation,
     DeleteCourseMutation,
 )
-from app_mutations.credentials.mutations import (
+from app_mutations.credentials import (
     CreateCredentialMutation,
     UpdateCredentialMutation,
     DeleteCredentialMutation,
 )
-from app_mutations.dummies.mutations import (
+from app_mutations.dummies import (
     CreateDummyMutation,
     UpdateDummyMutation,
     DeleteDummyMutation,
 )
-from app_mutations.jobs.mutations import (
+from app_mutations.jobs import (
     CreateJobMutation,
     UpdateJobMutation,
     DeleteJobMutation,
 )
-from app_mutations.metrics.mutations import (
+from app_mutations.metrics import (
     CreateMetricMutation,
     UpdateMetricMutation,
     DeleteMetricMutation,
 )
-from app_mutations.questions.mutations import (
+from app_mutations.questions import (
     CreateQuestionMutation,
     UpdateQuestionMutation,
     DeleteQuestionMutation,
 )
-from app_mutations.ranks.mutations import (
+from app_mutations.ranks import (
     CreateRankMutation,
     UpdateRankMutation,
     DeleteRankMutation,
 )
-from app_mutations.reports.mutations import (
+from app_mutations.reports import (
     CreateReportMutation,
     UpdateReportMutation,
     DeleteReportMutation,
 )
-from app_mutations.scopes.mutations import (
+from app_mutations.scopes import (
     CreateScopeMutation,
     UpdateScopeMutation,
     DeleteScopeMutation,
 )
-from app_mutations.services.mutations import (
+from app_mutations.services import (
     CreateServiceMutation, 
     UpdateServiceMutation,
     DeleteServiceMutation,
     UpdateServiceAddApplicationMutation,
     UpdateServiceDeleteApplicationMutation
 )
-from app_mutations.solutions.mutations import (
+from app_mutations.solutions import (
     CreateSolutionMutation,
     UpdateSolutionMutation,
     DeleteSolutionMutation,
 )
-from app_mutations.steps.mutations import (
+from app_mutations.steps import (
     CreateStepMutation,
     UpdateStepMutation,
     DeleteStepMutation,
 )
-from app_mutations.subscriptions.mutations import (
+from app_mutations.subscriptions import (
     CreateSubscriptionMutation,
     UpdateSubscriptionMutation,
     DeleteSubscriptionMutation,
 )
-from app_mutations.teams.mutations import (
+from app_mutations.teams import (
     CreateTeamMutation,
     UpdateTeamMutation,
     DeleteTeamMutation,
 )
-from app_mutations.topics.mutations import (
+from app_mutations.topics import (
     CreateTopicMutation,
     UpdateTopicMutation,
     DeleteTopicMutation,
 )
-from app_mutations.universities.mutations import (
+from app_mutations.universities import (
     CreateUniversityMutation,
     UpdateUniversityMutation,
     DeleteUniversityMutation,
 )
-from app_mutations.users.mutations import (
+from app_mutations.users import (
     CreateUserMutation,
     UpdateUserMutation,
     DeleteUserMutation,
+)
+from app_mutations.vulnerabilities import (
+    CreateVulnerabilityMutation,
+    UpdateVulnerabilityMutation,
+    DeleteVulnerabilityMutation,
 )
 
 class Mutations(graphene.ObjectType):
@@ -202,6 +209,7 @@ class Mutations(graphene.ObjectType):
     create_topic = CreateTopicMutation.Field()
     create_university = CreateUniversityMutation.Field()
     create_user = CreateUserMutation.Field()
+    create_vulnerability = CreateVulnerabilityMutation.Field() 
 
     update_application = UpdateApplicationMutation.Field()
     update_cluster = UpdateClusterMutation.Field()
@@ -229,6 +237,7 @@ class Mutations(graphene.ObjectType):
     update_topic = UpdateTopicMutation.Field()
     update_university = UpdateUniversityMutation.Field()
     update_user = UpdateUserMutation.Field()
+    update_vulnerability = UpdateVulnerabilityMutation.Field()
 
     delete_application = DeleteApplicationMutation.Field()
     delete_category = DeleteCategoryMutation.Field()
@@ -254,6 +263,7 @@ class Mutations(graphene.ObjectType):
     delete_topic = DeleteTopicMutation.Field()
     delete_university = DeleteUniversityMutation.Field()
     delete_user = DeleteUserMutation.Field()
+    delete_vulnerability = DeleteVulnerabilityMutation.Field()
 
 class Query(graphene.ObjectType):
     node = Node.Field()
@@ -282,6 +292,7 @@ class Query(graphene.ObjectType):
     topics = MongoengineConnectionField(TopicType)
     universities = MongoengineConnectionField(UniversityType)
     users = MongoengineConnectionField(UserType)
+    vulnerabilities = MongoengineConnectionField(VulnerabilityType)
 
     applications_list = graphene.List(ApplicationType)
     configurations_list = graphene.List(ConfigurationType)
@@ -308,6 +319,7 @@ class Query(graphene.ObjectType):
     topics_list = graphene.List(TopicType)
     universities_list = graphene.List(UniversityType)
     users_list = graphene.List(UserType)
+    vulnerabilities_list = graphene.List(VulnerabilityType)
     
     def resolve_applications_list(self, info):
         return Application.objects.all()
@@ -357,6 +369,8 @@ class Query(graphene.ObjectType):
         return University.objects.all()
     def resolve_users_list(self, info):
         return User.objects.all()
+    def resolve_vulnerabilities_list(self, info):
+        return Vulnerability.objects.all()
 
 schema = graphene.Schema(
     query=Query, 
@@ -385,5 +399,6 @@ schema = graphene.Schema(
         TopicType,
         UserType,
         UniversityType,
+        VulnerabilityType
         ]
     )

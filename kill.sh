@@ -1,1 +1,9 @@
+# Kill this service running on port 5000
 sudo lsof -t -i tcp:5000  | xargs kill
+
+## Pytest everything
+# pytest -vs tests/app_schema/
+# pytest -vs tests/app_controllers/test_travis_controller.py
+# pytest -vs tests/app_controllers/test_clouddns_controller.py
+# pytest -vs tests/app_controllers/test_cloudrun_controller.py
+# pytest -vs tests/app_controllers/test_kubernetes_controller.py

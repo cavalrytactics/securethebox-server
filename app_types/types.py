@@ -1,6 +1,6 @@
 from graphene import relay
 from graphene_mongo import MongoengineObjectType
-from app_models.graphql.models import (
+from app_models.models import (
     Application, 
     Category, 
 	Cluster,
@@ -24,7 +24,8 @@ from app_models.graphql.models import (
 	Team,
     Topic, 
 	University,
-    User)
+    User,
+	Vulnerability)
 
 class ApplicationType(MongoengineObjectType):
 	class Meta:
@@ -121,4 +122,8 @@ class UniversityType(MongoengineObjectType):
 class UserType(MongoengineObjectType):
 	class Meta:
 		model = User
+		interfaces = (relay.Node,)
+class VulnerabilityType(MongoengineObjectType):
+	class Meta:
+		model = Vulnerability
 		interfaces = (relay.Node,)

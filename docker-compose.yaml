@@ -1,23 +1,21 @@
 version: "3.7"
 services:
-  # securethebox-server:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.securethebox-server
-  #   restart: always
-  #   ports:
-  #     - 5000
-  code-server:
-    container_name: code-server
-    image: cavalrytactics/code-server:latest
+  securethebox-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.securethebox-server
+    restart: always
     ports:
-      - "8080:8080"
-    volumes:
-      - "${PWD}:/home/coder/project"
-      - "${PWD}/dev-env/code-server:/home/coder/.local/share/code-server"
-      - "${PWD}/dev-env/oh-my-zsh/.zshrc:/home/coder/.zshrc"
-    entrypoint:
-      - dumb-init
-      - code-server
-      - --auth=none
-      - --disable-telemetry
+      - 5000
+  # code-server:
+  #   container_name: code-server
+  #   image: cavalrytactics/code-server:latest
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - "${PWD}:/home/coder/project"
+  #   entrypoint:
+  #     - dumb-init
+  #     - code-server
+  #     - --auth=none
+  #     - --disable-telemetry

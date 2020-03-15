@@ -26,6 +26,7 @@ if __name__ == '__main__':
     # Look for environment variable APPENV
     try:
         currentDirectory = os.getcwd()
+        # Decrypt secrets
         with open(os.getcwd()+"/secrets/openssl","r") as f:
             envList = str(f.readline()).replace("$","").split(",")
             os.chdir(os.getcwd()+"/secrets")
