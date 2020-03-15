@@ -10,7 +10,7 @@ import shutil
 from typing import Tuple
 
 class KubernetesController():
-    def __init__(self) -> bool: 
+    def __init__(self): 
         self.currentDirectory = ""
         self.serviceName = ""
         self.userName = ""

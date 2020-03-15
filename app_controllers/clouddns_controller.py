@@ -28,7 +28,6 @@ class CloudDnsController():
         self.googleKubernetesClusterOperationInfo = ""
         self.googleServiceAccountEmail = ""
 
-
     def setParentDomain(self, parentDomain: str) -> bool:
         try:
             self.parentDomain = parentDomain

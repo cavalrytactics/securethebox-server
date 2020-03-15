@@ -10,7 +10,7 @@ import shutil
 
 
 class TravisController():
-    def __init__(self) -> bool:
+    def __init__(self):
         self.currentDirectory = ""
         self.fileName = ""
         self.encryptedEnvironmentVariables = {}
