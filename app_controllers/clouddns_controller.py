@@ -7,7 +7,6 @@ import yaml
 import re
 import shutil
 import time
-from typing import li
 
 class CloudDnsController():
     def __init__(self):

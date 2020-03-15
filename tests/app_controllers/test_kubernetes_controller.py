@@ -294,11 +294,11 @@ def test_addAuthARecordInParentDNSManagedZone():
     x.setSubManagedZonePrefix(pytest.globalData["googleCloudDnsSubManagedZonePrefix"])
     assert x.addAuthARecordInParentDNSManagedZone() == True
 
-# # ##############################################################################
+# ##############################################################################
 
-# # #              COMMENT ALL BELOW TO NOT DELETE DEPLOYMENT
+# #              COMMENT ALL BELOW TO NOT DELETE DEPLOYMENT
 
-# # ##############################################################################
+# ##############################################################################
 
 def test_manageKubernetesServicePod_delete():
     for var in pytest.globalData["environmentVariablesList"]:
