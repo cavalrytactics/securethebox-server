@@ -70,6 +70,7 @@
         "teams",
         "topics",
         "universities",
-        "users"
+        "users",
+        "vulnerabilities"
     ]
 }

@@ -4,23 +4,23 @@ import time
 kc = KubernetesController()
 
 globalData = {
-    "serviceName_ingress": "traefik",
-    "serviceName_service": "jenkins",
-    "serviceName_authentication": "auth",
-    "userName": "charles",
-    "emailAddress": "jidokaus@gmail.com",
-    "kubectlAction_apply": "apply",
-    "kubectlAction_delete": "delete",
-    "kubernetesPodId": "pod_id_123",
-    "unencryptedFileNames": ["securethebox-service-account.json"],
-    "environmentVariablesList": ["APPENV","SKIPKUBE","GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET"],
-    "googleProjectId": "securethebox",
-    "googleKubernetesComputeZone": "us-west1-a",
-    "googleKubernetesComputeCluster": "test",
-    "googleKubernetesComputeRegion": "us-west1",
-    "googleServiceAccountEmail": "kubernetes-sa@securethebox.iam.gserviceaccount.com",
-    "googleServiceAccountFile": "securethebox-service-account.json",
-    "localKubernetesCluster": "docker-desktop",
+    "googleProjectId": "securethebox-server",
+    "googleKubernetesComputeZone": "us-central1-a",
+    "googleKubernetesComputeCluster": "us-central1-a",
+    "googleKubernetesComputeRegion": "us-central1",
+    "googleKubernetesEngineNamespace": "",
+    "googleKubernetesEngineServiceAccountEmail": "stb-kubernetes-engine-sa@securethebox-server.iam.gserviceaccount.com",
+    "googleKubernetesEngineServiceAccountFile": "securethebox-server-stb-kubernetes-engine-sa.json",
+    "googleCloudRunServiceAccountEmail": "stb-cloud-run-sa@securethebox-client.iam.gserviceaccount.com",
+    "googleCloudRunServiceAccountFile": "securethebox-client-stb-cloud-run-sa.json",
+    "googleCloudRunProjectId": "securethebox-client",
+    "googleCloudRunImageName": "securethebox-server",
+    "googleCloudRunRegion": "us-central1",
+    "googleCloudRunPlatform": "managed",
+    "googleCloudDnsParentDomain": "securethebox.us",
+    "googleCloudDnsParentManagedZone": "securethebox-us",
+    "googleCloudDnsSubDomainPrefix": "us-central1-a",
+    "googleCloudDnsSubManagedZonePrefix": "us-central1-a",
 }
 
 class KubernetesManager():
@@ -44,7 +44,7 @@ class KubernetesManager():
         self.challengeGroupId = "1234"
         self.kubernetesPodId = ""
     
-    def setVariables(self, clusterName, userName, action, emailAddress):
+    def setVariables(self, clusterName: str, userName: str, action: str, emailAddress: str) -> bool:
         try:
             self.clusterName = clusterName
             self.userName = userName
@@ -54,7 +54,7 @@ class KubernetesManager():
         except:
             return False
 
-    def manageKubernetesCluster(self):
+    def manageKubernetesCluster(self) -> bool:
         try:
             for var in globalData["environmentVariablesList"]:
                 kc.setEnvironmentVariable(var)
@@ -76,7 +76,7 @@ class KubernetesManager():
         except:
             return False
 
-    def manageKubernetesIngress(self):
+    def manageKubernetesIngress(self) -> bool:
         try:
             for var in globalData["environmentVariablesList"]:
                 kc.setEnvironmentVariable(var)
@@ -100,7 +100,7 @@ class KubernetesManager():
         except:
             return False
 
-    def manageKubernetesAuthentication(self):
+    def manageKubernetesAuthentication(self) -> bool:
         try:
             for var in globalData["environmentVariablesList"]:
                 kc.setEnvironmentVariable(var)
@@ -124,7 +124,7 @@ class KubernetesManager():
         except:
             return False
 
-    def manageKubernetesDns(self):
+    def manageKubernetesDns(self) -> bool:
         try:
             for var in globalData["environmentVariablesList"]:
                 kc.setEnvironmentVariable(var)
@@ -148,7 +148,7 @@ class KubernetesManager():
         except:
             return False
 
-    def manageKubernetesServices(self):
+    def manageKubernetesServices(self) -> bool:
         try:
             for var in globalData["environmentVariablesList"]:
                 kc.setEnvironmentVariable(var)
@@ -179,7 +179,7 @@ class KubernetesManager():
         except:
             return False
 
-    def manageKubernetesStorage(self):
+    def manageKubernetesStorage(self) -> bool:
         try:
             for var in globalData["environmentVariablesList"]:
                 kc.setEnvironmentVariable(var)
