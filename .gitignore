@@ -1,4 +1,6 @@
 # SECURETHEBOX
+.git
+.gitignore
 venv/
 .vscode/
 .history/
@@ -16,6 +18,7 @@ secrets/*.yaml
 secrets/*.yml
 secrets/*.tar
 .DS_Store
+.testmondata
 
 # Logs
 logs

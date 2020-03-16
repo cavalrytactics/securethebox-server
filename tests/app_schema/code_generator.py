@@ -14,14 +14,14 @@ Lots of bugs. Not ready
 
 c = CodeGenerator()
 
-def test_loadGlobalData():
+def loadGlobalData():
     with open(str(os.getcwd())+"/tests/globalData.json", "r") as f:
         pytest.globalData = json.load(f)
 
-def test_setCurrentDirectory():
+def setCurrentDirectory():
     assert c.setCurrentDirectory() == True
 
-def test_generateGraphqlMutationFiles():
+def generateGraphqlMutationFiles():
     gbl = globals()
     moduleToImport = f"app_models.graphql.models"
     for modelName, cls in getmembers(importlib.import_module(moduleToImport), isclass):

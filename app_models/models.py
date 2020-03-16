@@ -139,7 +139,7 @@ class Application(Document):
     label = StringField()
     version = StringField()
     configuration = ReferenceField(Configuration)
-    vulnerabilities = ListField(ReferenceField(Vulnerability))
+    vulnerability = ListField(ReferenceField(Vulnerability))
     questions = ListField(ReferenceField(Question))
     dummies = ListField(ReferenceField(Dummy))
 

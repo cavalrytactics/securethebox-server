@@ -28,40 +28,36 @@ class CreateApplicationMutation(graphene.Mutation):
             version=application_data.version,
         )
         vulnerability = Vulnerability(
-                        value=vulnerability.value,
-                        label=vulnerability.label,
-                        type=vulnerability.type,
-                        exploitDbUrl=vulnerability.exploitDbUrl
+                        value=vulnerability_data.value,
+                        label=vulnerability_data.label,
+                        type=vulnerability_data.type,
+                        exploitDbUrl=vulnerability_data.exploitDbUrl 
                     )
-
         try:
             application_object = Application.objects.get(value=application_data.value)
         except Application.DoesNotExist:
             application_object = None
+        # Application exists, updating... update application
         if application_object:
-            # Application exists
             application = application_object
             if application_data.value:
-                application_data.value = application_data.value
+                application.value = application_data.value
             if application_data.label:
-                application_data.label = application_data.label
+                application.label = application_data.label
             if application_data.version:
-                application_data.version = application_data.version
-            
-            application.vulnerability.append(v)
+                application.version = application_data.version
+            # If vulnerability input exists...    
+            if vulnerability_data:
+                vulnerability_object = CreateApplicationMutation.get_vulnerability_object_by_value(vulnerability_data.value)
+                if vulnerability_object not in application.vulnerability:
+                    application.vulnerability.append(vulnerability_object)
             application.save()
             return UpdateApplicationMutation(application=application)
         else:
-            # if len(vulnerabilities) > 0:
-            #     for vulnerability in vulnerabilities:
-            #         v = Vulnerability(
-            #             value=vulnerability.value,
-            #             label=vulnerability.label,
-            #             type=vulnerability.type,
-            #             exploitDbUrl=vulnerability.exploitDbUrl
-            #         )
-            #         if v not in application.vulnerability:
-            #             application.vulnerability.append(v)
+            # Application does not exist
+            if vulnerability_data:
+                vulnerability_object = CreateApplicationMutation.get_vulnerability_object_by_value(vulnerability_data.value)
+                application.vulnerability.append(vulnerability_object)
             application.save()
             return CreateApplicationMutation(application=application)
 
@@ -83,8 +79,6 @@ class UpdateApplicationMutation(graphene.Mutation):
 
     def mutate(self, info, application_data=None, vulnerability_data=None):
         application = UpdateApplicationMutation.get_object(application_data.id)
-        vulnerabilities = vulnerability_data
-
         try:
             application_object = Application.objects.get(pk=application_data.id)
         except Application.DoesNotExist:
@@ -98,16 +92,6 @@ class UpdateApplicationMutation(graphene.Mutation):
                 application.label = application_data.label
             if application_data.version:
                 application.version = application_data.version
-            if len(vulnerabilities) > 0:
-                for vulnerability in vulnerabilities:
-                    v = Vulnerability(
-                        value=vulnerability.value,
-                        label=vulnerability.label,
-                        type=vulnerability.type,
-                        exploitDbUrl=vulnerability.exploitDbUrl
-                    )
-                    if v not in application.vulnerability:
-                        application.vulnerability.append(v)
             application.save()
         return UpdateApplicationMutation(application=application)
 

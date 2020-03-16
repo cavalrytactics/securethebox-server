@@ -7,7 +7,7 @@ import yaml
 from kubernetes import client, config
 import re
 import shutil
-from typing import Tuple
+from typing import Tuple, List
 
 class KubernetesController():
     def __init__(self): 
@@ -42,35 +42,35 @@ class KubernetesController():
         except:
             return False
 
-    def setClusterName(self, clusterName) -> bool:
+    def setClusterName(self, clusterName: str) -> bool:
         try:
             self.googleKubernetesComputeCluster = clusterName
             return True
         except:
             return False
 
-    def setServiceName(self, serviceName) -> bool:
+    def setServiceName(self, serviceName: str) -> bool:
         try:
             self.serviceName = serviceName
             return True
         except:
             return False
 
-    def setUserName(self, userName) -> bool:
+    def setUserName(self, userName: str) -> bool:
         try:
             self.userName = userName
             return True
         except:
             return False
 
-    def setEmailAddress(self, emailAddress) -> bool:
+    def setEmailAddress(self, emailAddress: str) -> bool:
         try:
             self.emailAddress = emailAddress
             return True
         except:
             return False
 
-    def setEnvironmentVariable(self, environmentVariable) -> bool:
+    def setEnvironmentVariable(self, environmentVariable: str) -> bool:
         try:
             if os.getenv(environmentVariable) is not None:
                 setattr(self, environmentVariable,
@@ -82,20 +82,20 @@ class KubernetesController():
         except:
             return False
 
-    def setKubernetesDeploymentName(self, kubernetesDeploymentName) -> bool:
+    def setKubernetesDeploymentName(self, kubernetesDeploymentName: str) -> bool:
         self.kubernetesDeploymentName = kubernetesDeploymentName
 
-    def setKubernetesDeploymentImage(self, kubernetesDeploymentImage) -> bool:
+    def setKubernetesDeploymentImage(self, kubernetesDeploymentImage: str) -> bool:
         self.kubernetesDeploymentImage = kubernetesDeploymentImage
 
-    def setKubernetesPodId(self, kubernetesPodId) -> bool:
+    def setKubernetesPodId(self, kubernetesPodId: str) -> bool:
         try:
             self.kubernetesPodId = kubernetesPodId
             return True
         except:
             return False
 
-    def setKubectlAction(self, kubectlAction) -> bool:
+    def setKubectlAction(self, kubectlAction: str) -> bool:
         try:
             self.kubectlAction = kubectlAction
             return True
@@ -270,35 +270,35 @@ class KubernetesController():
         except:
             return False
 
-    def setGoogleProjectId(self, googleProjectId) -> bool:
+    def setGoogleProjectId(self, googleProjectId: str) -> bool:
         try:
             self.googleProjectId = googleProjectId
             return True
         except:
             return False
 
-    def setGoogleKubernetesComputeZone(self, googleKubernetesComputeZone) -> bool:
+    def setGoogleKubernetesComputeZone(self, googleKubernetesComputeZone: str) -> bool:
         try:
             self.googleKubernetesComputeZone = googleKubernetesComputeZone
             return True
         except:
             return False
 
-    def setGoogleKubernetesComputeCluster(self, googleKubernetesComputeCluster) -> bool:
+    def setGoogleKubernetesComputeCluster(self, googleKubernetesComputeCluster: str) -> bool:
         try:
             self.googleKubernetesComputeCluster = googleKubernetesComputeCluster
             return True
         except:
             return False
 
-    def setGoogleKubernetesComputeRegion(self, googleKubernetesComputeRegion) -> bool:
+    def setGoogleKubernetesComputeRegion(self, googleKubernetesComputeRegion: str) -> bool:
         try:
             self.googleKubernetesComputeRegion = googleKubernetesComputeRegion
             return True
         except:
             return False
 
-    def setGoogleServiceAccountEmail(self, googleServiceAccountEmail) -> bool:
+    def setGoogleServiceAccountEmail(self, googleServiceAccountEmail: str) -> bool:
         try:
             self.googleServiceAccountEmail = googleServiceAccountEmail
             return True
@@ -388,7 +388,7 @@ class KubernetesController():
         except:
             return False
 
-    def helper_deleteOrphanObject(self, objectId, objectType) -> bool:
+    def helper_deleteOrphanObject(self, objectId: str, objectType: str) -> bool:
         print("Deleting:", objectId, objectType)
         if objectType == "firewall-rules":
             subprocess.Popen([f"gcloud compute --project=\"{self.googleProjectId}\" -q firewall-rules delete {objectId}"],shell=True).wait()
@@ -403,7 +403,7 @@ class KubernetesController():
         elif objectType == "addresses":
             subprocess.Popen([f"echo 'y' | gcloud compute --project=\"{self.googleProjectId}\" addresses delete {objectId}"],shell=True).wait()
     
-    def helper_checkValidFirewallRule(self, objectId) -> bool:
+    def helper_checkValidFirewallRule(self, objectId: str) -> bool:
         command = ["gcloud",f"--project=\"{self.googleProjectId}\"","compute","firewall-rules","describe",f"\"{objectId}\"","--format=json"]
         out = check_output(command)
         fw_json=json.loads(out)
@@ -426,7 +426,7 @@ class KubernetesController():
             object_split_list = object_list.splitlines()
             for objectId in object_split_list:
                 self.helper_deleteOrphanObject(objectId, "firewall-rules")
-            print("\n\nIF YOU SEE ERRORS HERE, YOU NEED TO DELETE MANUALLY!")
+            print(u"\n\n \u001b[48;5;196" + "m " +"IF YOU SEE ERRORS HERE, YOU NEED TO DELETE MANUALLY!\u001b[0m")
             print(f"\nhttps://console.cloud.google.com/networking/firewalls/list?project={self.googleProjectId}&authuser=2&addressesTablesize=50\n")
             return True
         except:
@@ -453,7 +453,7 @@ class KubernetesController():
             object_split_list = object_list.splitlines()
             for objectId in object_split_list:
                 self.helper_deleteOrphanObject(objectId, "addresses")
-            print("\n\nIF YOU SEE ERRORS HERE, YOU NEED TO DELETE MANUALLY!")
+            print(u"\n\n \u001b[48;5;196" + "m " +"IF YOU SEE ERRORS HERE, YOU NEED TO DELETE MANUALLY!\u001b[0m")
             print(f"\nhttps://console.cloud.google.com/networking/addresses/list?authuser=2&project={self.googleProjectId}&addressesTablesize=50\n")
             return True
         except:
@@ -469,7 +469,7 @@ class KubernetesController():
                 self.helper_deleteOrphanObject(objectId, "forwarding-rules")
                 self.helper_deleteOrphanObject(objectId, "target-pools")
                 self.helper_deleteOrphanObject(objectId, "health-checks")
-            print("\n\nIF YOU SEE ERRORS HERE, >>>>> FALSE POSITIVE <<<<<")
+            print(u"\n\n \u001b[48;5;21" + "m " +"IF YOU SEE ERRORS HERE, >>>>> FALSE POSITIVE <<<<<\u001b[0m")
             print(f"\nhttps://console.cloud.google.com/net-services/loadbalancing/loadBalancers/list?project={self.googleProjectId}\n")
             return True
         except:

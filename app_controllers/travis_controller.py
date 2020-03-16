@@ -33,7 +33,7 @@ class TravisController():
         try:
             self.currentDirectory = os.getcwd()
             os.chdir(self.currentDirectory+"/secrets")
-            subprocess.Popen([f"tar cvf secrets.tar {(' '.join(listOfFiles))}"], stdout=subprocess.PIPE, shell=True)
+            subprocess.Popen([f"tar cvf secrets.tar {(' '.join(listOfFiles))} >> /dev/null 2>&1"], stdout=subprocess.PIPE, shell=True)
             os.chdir(self.currentDirectory)
             return True
         except:

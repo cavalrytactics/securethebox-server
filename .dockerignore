@@ -16,8 +16,9 @@ secrets/*.json
 secrets/*.txt
 secrets/*.yaml
 secrets/*.yml
-secrets/secrets.tar
+secrets/*.tar
 .DS_Store
+.testmondata
 
 # Logs
 logs

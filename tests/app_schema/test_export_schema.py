@@ -12,4 +12,4 @@ def test_writeSchemaToFile():
     assert c.writeSchemaToFile() == True
 
 def test_copyToFrontend():
-    assert c.copyToFrontend("../securethebox-client/src/graphql/schema.graphql") == True
+    assert c.copyToFrontend("../securethebox-client/src/graphql/schema.graphql") == True 

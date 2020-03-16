@@ -59,7 +59,7 @@ class CloudRunController():
     def setRegion(self, region: str) -> bool:
         try:
             self.region = region
-            subprocess.Popen([f"gcloud config set run/region {self.region}"],shell=True).wait()
+            subprocess.Popen([f"gcloud config set run/region {self.region} >> /dev/null 2>&1"],shell=True).wait()
             return True
         except:
             return False
@@ -67,7 +67,7 @@ class CloudRunController():
     def setPlatform(self,platform: str) -> bool:
         try:
             self.platform = platform
-            subprocess.Popen([f"gcloud config set run/platform {self.platform}"],shell=True).wait()
+            subprocess.Popen([f"gcloud config set run/platform {self.platform} >> /dev/null 2>&1"],shell=True).wait()
             return True
         except:
             return False
@@ -75,17 +75,17 @@ class CloudRunController():
 
     def setDockerSources(self) -> bool:
         try:
-            subprocess.Popen([f"echo 'y' | gcloud auth configure-docker"],shell=True).wait()
-            subprocess.Popen([f"echo 'y' | gcloud components install docker-credential-gcr"],shell=True).wait()
+            subprocess.Popen([f"echo 'y' | gcloud auth configure-docker >> /dev/null 2>&1"],shell=True).wait()
+            subprocess.Popen([f"echo 'y' | gcloud components install docker-credential-gcr >> /dev/null 2>&1"],shell=True).wait()
             return True
         except:
             return False
         
     def setAccount(self) -> bool:
         try:
-            subprocess.Popen([f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName}"],shell=True).wait()
-            subprocess.Popen([f"gcloud config set project {self.projectId}"],shell=True).wait()
-            subprocess.Popen([f"gcloud config set account {self.serviceAccountEmailAddress}"],shell=True).wait()
+            subprocess.Popen([f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName} >> /dev/null 2>&1"],shell=True).wait()
+            subprocess.Popen([f"gcloud config set project {self.projectId} >> /dev/null 2>&1"],shell=True).wait()
+            subprocess.Popen([f"gcloud config set account {self.serviceAccountEmailAddress} >> /dev/null 2>&1"],shell=True).wait()
             return True
         except:
             return False
@@ -100,7 +100,7 @@ class CloudRunController():
                     variables = env.split(",")
                     key = variables[0].split("=")[1]
                     iv = variables[1].split("=")[1]
-                    subprocess.Popen([f"docker build . --build-arg key={key} --build-arg iv={iv} --tag gcr.io/{self.projectId}/{self.imageName}"],shell=True).wait()
+                    subprocess.Popen([f"docker build . --build-arg key={key} --build-arg iv={iv} --tag gcr.io/{self.projectId}/{self.imageName} >> /dev/null 2>&1"],shell=True).wait()
                 return True
             # For Travis Deploy
             else:
@@ -114,7 +114,7 @@ class CloudRunController():
                     variables = concatList.split(",")
                     key = variables[0].split("=")[1]
                     iv = variables[1].split("=")[1]
-                    subprocess.Popen([f"docker build . -build-arg key={key} --build-arg iv={iv} --tag gcr.io/{self.projectId}/{self.imageName}"],shell=True).wait()
+                    subprocess.Popen([f"docker build . -build-arg key={key} --build-arg iv={iv} --tag gcr.io/{self.projectId}/{self.imageName} >> /dev/null 2>&1"],shell=True).wait()
                 return True
         except:
             return False
