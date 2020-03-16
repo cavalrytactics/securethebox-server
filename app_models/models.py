@@ -134,7 +134,7 @@ class Dummy(Document):
 
 class Application(Document):
     meta = {"collection": "applications"}
-    ID = ObjectIdField()
+    _id  = ObjectIdField()
     value = StringField()
     label = StringField()
     version = StringField()

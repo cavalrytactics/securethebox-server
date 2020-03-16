@@ -5,6 +5,7 @@ from app_mutations.vulnerabilities import VulnerabilityInput
 
 class ApplicationInput(graphene.InputObjectType):
     id = graphene.ID()
+    # _id = graphene.ID(primary_key=True)
     value = graphene.String()
     label = graphene.String()
     version = graphene.String()
@@ -72,7 +73,7 @@ class UpdateApplicationMutation(graphene.Mutation):
     @staticmethod
     def get_vulnerability_object_by_value(exploitDbUrl):
         return Vulnerability.objects.get(exploitDbUrl=exploitDbUrl)   
-
+  
     @staticmethod
     def get_object(id):
         return Application.objects.get(pk=id)
@@ -101,7 +102,7 @@ class DeleteApplicationMutation(graphene.Mutation):
     success = graphene.Boolean()
     def mutate(self, info, id):
         try:
-            Application.objects.get(pk=id).delete()
+            Application.objects(_id=id).delete()
             success = True
         except:
             success = False
