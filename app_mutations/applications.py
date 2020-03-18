@@ -97,12 +97,21 @@ class UpdateApplicationMutation(graphene.Mutation):
 
 class DeleteApplicationMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        id = graphene.ID()
     success = graphene.Boolean()
     def mutate(self, info, id):
         try:
-            Application.objects(id=id).delete()
-        except:
+            # a = Application.objects.get(id=id)
+            app = Application.objects.all()
+            for a in app:
+                if str(id) == str(a.id):
+                    print(a.id)
+                    a.delete()
+                # for property, value in vars().iteritems():
+                #     print(property, ": ", value)
+            #print(a)
             success = True
+            return DeleteApplicationMutation(success=success)
+        except:
             success = False
-        return DeleteApplicationMutation(success=success)
+            return DeleteApplicationMutation(success=success)
