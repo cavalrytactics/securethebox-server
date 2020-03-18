@@ -2,10 +2,9 @@ import graphene
 from app_models.models import Application, Vulnerability
 from app_types.types import ApplicationType, VulnerabilityType
 from app_mutations.vulnerabilities import VulnerabilityInput
-
+    
 class ApplicationInput(graphene.InputObjectType):
     id = graphene.ID()
-    # _id = graphene.ID(primary_key=True)
     value = graphene.String()
     label = graphene.String()
     version = graphene.String()
@@ -102,8 +101,8 @@ class DeleteApplicationMutation(graphene.Mutation):
     success = graphene.Boolean()
     def mutate(self, info, id):
         try:
-            Application.objects(_id=id).delete()
-            success = True
+            Application.objects(id=id).delete()
         except:
+            success = True
             success = False
         return DeleteApplicationMutation(success=success)
