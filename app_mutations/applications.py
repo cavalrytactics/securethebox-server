@@ -2,9 +2,10 @@ import graphene
 from app_models.models import Application, Vulnerability
 from app_types.types import ApplicationType, VulnerabilityType
 from app_mutations.vulnerabilities import VulnerabilityInput
-    
+from bson import ObjectId 
+
 class ApplicationInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     value = graphene.String()
     label = graphene.String()
     version = graphene.String()
@@ -39,22 +40,23 @@ class CreateApplicationMutation(graphene.Mutation):
             application_object = None
         # Application exists, updating... update application
         if application_object:
-            application = application_object
+            app = application_object
             if application_data.value:
-                application.value = application_data.value
+                app.value = application_data.value
             if application_data.label:
-                application.label = application_data.label
+                app.label = application_data.label
             if application_data.version:
-                application.version = application_data.version
+                app.version = application_data.version
             # If vulnerability input exists...    
             if vulnerability_data:
                 vulnerability_object = CreateApplicationMutation.get_vulnerability_object_by_value(vulnerability_data.value)
-                if vulnerability_object not in application.vulnerability:
-                    application.vulnerability.append(vulnerability_object)
-            application.save()
-            return UpdateApplicationMutation(application=application)
+                if vulnerability_object not in app.vulnerability:
+                    app.vulnerability.append(vulnerability_object)
+            app.save()
+            return UpdateApplicationMutation(application=app)
         else:
             # Application does not exist
+            application.ID = ObjectId()
             if vulnerability_data:
                 vulnerability_object = CreateApplicationMutation.get_vulnerability_object_by_value(vulnerability_data.value)
                 application.vulnerability.append(vulnerability_object)
@@ -74,15 +76,15 @@ class UpdateApplicationMutation(graphene.Mutation):
         return Vulnerability.objects.get(exploitDbUrl=exploitDbUrl)   
   
     @staticmethod
-    def get_object(id):
-        return Application.objects.get(pk=id)
+    def get_object(ID):
+        return Application.objects.get(pk=ID)
 
     def mutate(self, info, application_data=None, vulnerability_data=None):
-        application = UpdateApplicationMutation.get_object(application_data.id)
+        application = UpdateApplicationMutation.get_object(application_data.ID)
         try:
-            application_object = Application.objects.get(pk=application_data.id)
+            application_object = Application.objects.get(pk=application_data.ID)
         except Application.DoesNotExist:
-            application_object = None
+            application_object = application
         if application_object:
             # Application exists
             application = application_object
@@ -97,20 +99,16 @@ class UpdateApplicationMutation(graphene.Mutation):
 
 class DeleteApplicationMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID()
+        ID = graphene.ID()
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            # a = Application.objects.get(id=id)
             app = Application.objects.all()
+            success = False
             for a in app:
-                if str(id) == str(a.id):
-                    print(a.id)
+                if str(ID) == str(a.ID):
                     a.delete()
-                # for property, value in vars().iteritems():
-                #     print(property, ": ", value)
-            #print(a)
-            success = True
+                    success = True
             return DeleteApplicationMutation(success=success)
         except:
             success = False
