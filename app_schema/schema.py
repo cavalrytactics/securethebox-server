@@ -14,7 +14,7 @@ from app_models.models import (
     Dummy,
     Job,
     Metric,
-    Question,
+    Problem,
     Report,
     Rank,
     Scope,
@@ -41,7 +41,7 @@ from app_types.types import (
     DummyType,
     JobType,
     MetricType,
-    QuestionType,
+    ProblemType,
     RankType,
     ReportType,
     ScopeType,
@@ -116,10 +116,10 @@ from app_mutations.metrics import (
     UpdateMetricMutation,
     DeleteMetricMutation,
 )
-from app_mutations.questions import (
-    CreateQuestionMutation,
-    UpdateQuestionMutation,
-    DeleteQuestionMutation,
+from app_mutations.problems import (
+    CreateProblemMutation,
+    UpdateProblemMutation,
+    DeleteProblemMutation,
 )
 from app_mutations.ranks import (
     CreateRankMutation,
@@ -197,7 +197,7 @@ class Mutations(graphene.ObjectType):
     create_dummy = CreateDummyMutation.Field()
     create_job = CreateJobMutation.Field()
     create_metric = CreateMetricMutation.Field()
-    create_question = CreateQuestionMutation.Field()
+    create_problem = CreateProblemMutation.Field()
     create_rank = CreateRankMutation.Field()
     create_report = CreateReportMutation.Field()
     create_scope = CreateScopeMutation.Field()
@@ -223,7 +223,7 @@ class Mutations(graphene.ObjectType):
     update_dummy = UpdateDummyMutation.Field()
     update_job = UpdateJobMutation.Field()
     update_metric = UpdateMetricMutation.Field()
-    update_question = UpdateQuestionMutation.Field()
+    update_problem = UpdateProblemMutation.Field()
     update_rank = UpdateRankMutation.Field()
     update_report = UpdateReportMutation.Field()
     update_scope = UpdateScopeMutation.Field()
@@ -251,7 +251,7 @@ class Mutations(graphene.ObjectType):
     delete_dummy = DeleteDummyMutation.Field()
     delete_job = DeleteJobMutation.Field()
     delete_metric = DeleteMetricMutation.Field()
-    delete_question = DeleteQuestionMutation.Field()
+    delete_problem = DeleteProblemMutation.Field()
     delete_rank = DeleteRankMutation.Field()
     delete_report = DeleteReportMutation.Field()
     delete_scope = DeleteScopeMutation.Field()
@@ -280,7 +280,7 @@ class Query(graphene.ObjectType):
     dummies = MongoengineConnectionField(DummyType)
     jobs = MongoengineConnectionField(JobType)
     metrics = MongoengineConnectionField(MetricType)
-    questions = MongoengineConnectionField(QuestionType)
+    problems = MongoengineConnectionField(ProblemType)
     ranks = MongoengineConnectionField(RankType)
     reports = MongoengineConnectionField(ReportType)
     scopes = MongoengineConnectionField(ScopeType)
@@ -307,7 +307,7 @@ class Query(graphene.ObjectType):
     dummies_list = graphene.List(DummyType)
     jobs_list = graphene.List(JobType)
     metrics_list = graphene.List(MetricType)
-    questions_list = graphene.List(QuestionType)
+    problems_list = graphene.List(ProblemType)
     ranks_list = graphene.List(RankType)
     reports_list = graphene.List(ReportType)
     scopes_list = graphene.List(ScopeType)
@@ -345,8 +345,8 @@ class Query(graphene.ObjectType):
         return Job.objects.all()
     def resolve_metrics_list(self, info):
         return Metric.objects.all()
-    def resolve_questions_list(self, info):
-        return Question.objects.all()
+    def resolve_problems_list(self, info):
+        return Problem.objects.all()
     def resolve_ranks_list(self, info):
         return Rank.sobjects.all()
     def resolve_reports_list(self, info):
@@ -387,7 +387,7 @@ schema = graphene.Schema(
         DummyType,
         JobType,
         MetricType,
-        QuestionType,
+        ProblemType,
         RankType,
         ReportType,
         ScopeType,

@@ -4,9 +4,10 @@ from app_types.types import CourseType,ReportType,CategoryType,ClusterType
 from app_mutations.reports import ReportInput
 from app_mutations.categories import CategoryInput
 from app_mutations.clusters import ClusterInput
+from bson import ObjectId 
 
 class CourseInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     title = graphene.String()
     description = graphene.String()
     activeStep = graphene.Int()
@@ -53,7 +54,7 @@ class CreateCourseMutation(graphene.Mutation):
         except Course.DoesNotExist:
             course_object = None
         if course_object:
-            # Course exists
+            # Course exists, update
             course = course_object
             if course_data.title:
                 course.title = course_data.title
@@ -75,6 +76,9 @@ class CreateCourseMutation(graphene.Mutation):
             return UpdateCourseMutation(course=course)
         else:
             # Course does not exist
+            course.ID = ObjectId()
+            course.cluster = cluster
+            course.category = category
             course.save()
             return CreateCourseMutation(course=course)
 
@@ -97,16 +101,16 @@ class UpdateCourseMutation(graphene.Mutation):
         return Cluster.objects.get(value=value)
     
     @staticmethod
-    def get_object(id):
-        return Course.objects.get(pk=id)
+    def get_object(ID):
+        return Course.objects.get(pk=ID)
     
     def mutate(self, info, course_data=None):
-        course = UpdateCourseMutation.get_object(course_data.id)
+        course = UpdateCourseMutation.get_object(course_data.ID)
         category = UpdateCourseMutation.get_category_object_by_value(category_data.value)
         cluster = UpdateCourseMutation.get_cluster_object_by_value(cluster_data.value)
 
         try:
-            course_object = Course.objects.get(pk=course_data.id)
+            course_object = Course.objects.get(pk=course_data.ID)
         except Course.DoesNotExist:
             course_object = None
         if course_object:
@@ -133,11 +137,11 @@ class UpdateCourseMutation(graphene.Mutation):
 
 class DeleteCourseMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID()
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Course.objects.get(pk=id).delete()
+            Course.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

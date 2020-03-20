@@ -13,7 +13,7 @@ from app_models.models import (
 	Dummy,
 	Job,
 	Metric,
-    Question,
+    Problem,
 	Rank,
     Report, 
     Scope, 
@@ -75,9 +75,9 @@ class MetricType(MongoengineObjectType):
 	class Meta:
 		model = Metric
 		interfaces = (relay.Node,)
-class QuestionType(MongoengineObjectType):
+class ProblemType(MongoengineObjectType):
 	class Meta:
-		model = Question
+		model = Problem
 		interfaces = (relay.Node,)
 class RankType(MongoengineObjectType):
 	class Meta:

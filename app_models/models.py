@@ -15,7 +15,7 @@ from mongoengine.fields import (
 
 class Vulnerability(Document):
     meta = {"collection": "vulnerabilities"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     value = StringField()
     label = StringField()
     type = StringField()
@@ -23,7 +23,7 @@ class Vulnerability(Document):
 
 class Subscription(Document):
     meta = {"collection": "subscriptions"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     stripeCustomerPlan = StringField()
     stripeCustomerId = StringField()
     stripeCustomerSubscriptionId = StringField()
@@ -31,14 +31,14 @@ class Subscription(Document):
 
 class Rank(Document):
     meta = {"collection": "ranks"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     coursesComplete = IntField()
     flagsObtained = IntField()
     position = IntField()
     
 class User(Document):
     meta = {"collection": "users"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     manager = BooleanField()
     email = EmailField()
     level = IntField()
@@ -50,18 +50,18 @@ class User(Document):
 
 class Team(Document):
     meta = {"collection": "teams"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     members = ListField(ReferenceField(User))
 
 class University(Document):
     meta = {"collection": "universities"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     team = ReferenceField(Team)
     domain = StringField()
 
 class Job(Document):
     meta = {"collection": "jobs"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     description = StringField()
     minimumRank = IntField()
     responsibilities = StringField()
@@ -73,13 +73,13 @@ class Job(Document):
 
 class Company(Document):
     meta = {"collection": "companies"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     managers = ListField(ReferenceField(User))
     jobs = ListField(ReferenceField(Job))
 
 class Credential(Document):
     meta = {"collection": "credentials"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     username = StringField()
     password = StringField()
     publicKey = StringField()
@@ -87,47 +87,48 @@ class Credential(Document):
 
 class Configuration(Document):
     meta = {"collection": "configurations"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     port = IntField()
     url = URLField()
     credentals = ReferenceField(Credential)
 
 class Competency(Document):
     meta = {"collection": "competencies"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     label = StringField()
     value = StringField()
 
 class Topic(Document):
     meta = {"collection": "topics"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     competency = ReferenceField(Competency)
     label = StringField()
     value = StringField()
 
 class Scope(Document):
     meta = {"collection": "scopes"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     topic = ReferenceField(Topic)
     label = StringField()
     value = StringField()
 
 class Solution(Document):
     meta = {"collection": "solutions"}
-    ID = StringField(primary_key=True)    
+    ID = ObjectIdField(primary_key=True)    
     value = StringField()
 
-class Question(Document):
-    meta = {"collection": "questions"}
-    ID = StringField(primary_key=True)
+class Problem(Document):
+    meta = {"collection": "problems"}
+    ID = ObjectIdField(primary_key=True)
     solutions = ReferenceField(Solution)
     scope = ReferenceField(Scope)
     attempts = IntField()
     value = StringField()
+    label = StringField()
 
 class Dummy(Document):
     meta = {"collection": "dummies"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     intent = StringField()
     purchases = IntField()
     active = BooleanField()
@@ -140,12 +141,12 @@ class Application(Document):
     version = StringField()
     configuration = ReferenceField(Configuration)
     vulnerability = ListField(ReferenceField(Vulnerability))
-    questions = ListField(ReferenceField(Question))
+    problems = ListField(ReferenceField(Problem))
     dummies = ListField(ReferenceField(Dummy))
 
 class Metric(Document):
     meta = {"collection": "metrics"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     uptime = DateTimeField()
     downtime = DateTimeField()
     activeUsers = IntField()
@@ -154,7 +155,7 @@ class Metric(Document):
 
 class Service(Document):
     meta = {"collection": "services"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     value = StringField()
     label = StringField()
     type = StringField()
@@ -162,25 +163,25 @@ class Service(Document):
 
 class Report(Document):
     meta = {"collection": "reports"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     score = IntField()
 
 class Category(Document):
     meta = {"collection": "categories"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     value = StringField()
     label = StringField()
     color = StringField()
     
 class Container(Document):
     meta = {"collection": "containers"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     services = ListField(ReferenceField(Service))
     status = StringField() 
 
 class Cluster(Document):
     meta = {"collection": "clusters"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     value = StringField()
     label = StringField()
     status = StringField()
@@ -188,13 +189,13 @@ class Cluster(Document):
 
 class Step(Document):
     meta = {"collection": "steps"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     title = StringField()
     content = StringField()
 
 class Course(Document):
     meta = {"collection": "courses"}
-    ID = StringField(primary_key=True)
+    ID = ObjectIdField(primary_key=True)
     activeStep = IntField()
     description = StringField()
     length = IntField()

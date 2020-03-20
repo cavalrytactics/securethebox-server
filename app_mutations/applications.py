@@ -38,7 +38,7 @@ class CreateApplicationMutation(graphene.Mutation):
             application_object = Application.objects.get(value=application_data.value)
         except Application.DoesNotExist:
             application_object = None
-        # Application exists, updating... update application
+        # Application exists, update
         if application_object:
             app = application_object
             if application_data.value:
@@ -72,15 +72,17 @@ class UpdateApplicationMutation(graphene.Mutation):
         vulnerability_data = VulnerabilityInput(required=True)
 
     @staticmethod
-    def get_vulnerability_object_by_value(exploitDbUrl):
-        return Vulnerability.objects.get(exploitDbUrl=exploitDbUrl)   
+    def get_vulnerability_object_by_value(value):
+        return Vulnerability.objects.get(value=value)   
   
     @staticmethod
     def get_object(ID):
         return Application.objects.get(pk=ID)
 
-    def mutate(self, info, application_data=None, vulnerability_data=None):
+    def mutate(self, info, application_data=None):
         application = UpdateApplicationMutation.get_object(application_data.ID)
+        vulnerability = UpdateApplicationMutation.get_vulnerability_object_by_value(vulerability_data.ID)
+
         try:
             application_object = Application.objects.get(pk=application_data.ID)
         except Application.DoesNotExist:
@@ -103,12 +105,8 @@ class DeleteApplicationMutation(graphene.Mutation):
     success = graphene.Boolean()
     def mutate(self, info, ID):
         try:
-            app = Application.objects.all()
-            success = False
-            for a in app:
-                if str(ID) == str(a.ID):
-                    a.delete()
-                    success = True
+            Application.objects.get(pk=ID).delete()
+            success = True
             return DeleteApplicationMutation(success=success)
         except:
             success = False
