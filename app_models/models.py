@@ -116,6 +116,7 @@ class Solution(Document):
     meta = {"collection": "solutions"}
     ID = ObjectIdField(primary_key=True)    
     value = StringField()
+    label = StringField()
 
 class Problem(Document):
     meta = {"collection": "problems"}
@@ -125,6 +126,12 @@ class Problem(Document):
     attempts = IntField()
     value = StringField()
     label = StringField()
+    instructions = StringField() 
+    points = IntField()
+    number = IntField()
+    startDate = StringField()
+    dueDate = StringField()
+    rejectDate = StringField()
 
 class Dummy(Document):
     meta = {"collection": "dummies"}
@@ -186,7 +193,7 @@ class Cluster(Document):
     label = StringField()
     status = StringField()
     containers = ListField(ReferenceField(Container))
-
+    
 class Step(Document):
     meta = {"collection": "steps"}
     ID = ObjectIdField(primary_key=True)

@@ -320,9 +320,84 @@ class Query(graphene.ObjectType):
     universities_list = graphene.List(UniversityType)
     users_list = graphene.List(UserType)
     vulnerabilities_list = graphene.List(VulnerabilityType)
-    
-    def resolve_applications_list(self, info):
-        return Application.objects.all()
+
+    application = graphene.Field(ApplicationType, ID=graphene.ID(required=True))
+    cluster = graphene.Field(ClusterType, ID=graphene.ID(required=True))
+    company = graphene.Field(CompanyType, ID=graphene.ID(required=True))
+    container = graphene.Field(ContainerType, ID=graphene.ID(required=True))
+    configuration = graphene.Field(ConfigurationType, ID=graphene.ID(required=True))
+    credential = graphene.Field(CredentialType, ID=graphene.ID(required=True))
+    category = graphene.Field(CategoryType, ID=graphene.ID(required=True))
+    competency = graphene.Field(CompetencyType, ID=graphene.ID(required=True))
+    course = graphene.Field(CourseType, ID=graphene.ID(required=True))
+    dummy = graphene.Field(DummyType, ID=graphene.ID(required=True))
+    job = graphene.Field(JobType, ID=graphene.ID(required=True))
+    metric = graphene.Field(MetricType, ID=graphene.ID(required=True))
+    problem = graphene.Field(ProblemType, ID=graphene.ID(required=True))
+    rank = graphene.Field(RankType, ID=graphene.ID(required=True))
+    report = graphene.Field(ReportType, ID=graphene.ID(required=True))
+    scope = graphene.Field(ScopeType, ID=graphene.ID(required=True))
+    service = graphene.Field(ServiceType, ID=graphene.ID(required=True))
+    solution = graphene.Field(SolutionType, ID=graphene.ID(required=True))
+    step = graphene.Field(StepType, ID=graphene.ID(required=True))
+    subscription = graphene.Field(SubscriptionType, ID=graphene.ID(required=True))
+    team = graphene.Field(TeamType, ID=graphene.ID(required=True))
+    topic = graphene.Field(TopicType, ID=graphene.ID(required=True))
+    university = graphene.Field(UniversityType, ID=graphene.ID(required=True))
+    user = graphene.Field(UserType, ID=graphene.ID(required=True))
+    vulnerability = graphene.Field(VulnerabilityType, ID=graphene.ID(required=True))
+
+    def resolve_application(root, info, ID):
+        return Application.objects.get(pk=ID)
+    def resolve_cluster(root, info, ID):
+        return Cluster.objects.get(pk=ID)
+    def resolve_company(root, info, ID):
+        return Company.objects.get(pk=ID)
+    def resolve_container(root, info, ID):
+        return Container.objects.get(pk=ID)
+    def resolve_configuration(root, info, ID):
+        return Configuration.objects.get(pk=ID)
+    def resolve_credential(root, info, ID):
+        return Credential.objects.get(pk=ID)
+    def resolve_category(root, info, ID):
+        return Category.objects.get(pk=ID)
+    def resolve_competency(root, info, ID):
+        return Competency.objects.get(pk=ID)
+    def resolve_course(root, info, ID):
+        return Course.objects.get(pk=ID)
+    def resolve_dummy(root, info, ID):
+        return Dummy.objects.get(pk=ID)
+    def resolve_job(root, info, ID):
+        return Job.objects.get(pk=ID)
+    def resolve_metric(root, info, ID):
+        return Metric.objects.get(pk=ID)
+    def resolve_problem(root, info, ID):
+        return Problem.objects.get(pk=ID)
+    def resolve_rank(root, info, ID):
+        return Rank.objects.get(pk=ID)
+    def resolve_report(root, info, ID):
+        return Report.objects.get(pk=ID)
+    def resolve_scope(root, info, ID):
+        return Scope.objects.get(pk=ID)
+    def resolve_service(root, info, ID):
+        return Service.objects.get(pk=ID)
+    def resolve_solution(root, info, ID):
+        return Solution.objects.get(pk=ID)
+    def resolve_step(root, info, ID):
+        return Step.objects.get(pk=ID)
+    def resolve_subscription(root, info, ID):
+        return Subscription.objects.get(pk=ID)
+    def resolve_team(root, info, ID):
+        return Team.objects.get(pk=ID)
+    def resolve_topic(root, info, ID):
+        return Topic.objects.get(pk=ID)
+    def resolve_university(root, info, ID):
+        return University.objects.get(pk=ID)
+    def resolve_user(root, info, ID):
+        return User.objects.get(pk=ID)
+    def resolve_vulnerability(root, info, ID):
+        return Vulnerability.objects.get(pk=ID)
+
     def resolve_clusters_list(self, info):
         return Cluster.objects.all()
     def resolve_companies_list(self, info):
