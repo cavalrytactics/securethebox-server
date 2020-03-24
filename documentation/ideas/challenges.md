@@ -11,7 +11,6 @@
 - This is a Blackbox challenge
 - Scrape job listing sites for engineering roles
 
-
 # [Company] Click flow
 - Show grid of candidates
 - Filter pay range/company/IC Level
@@ -24,7 +23,6 @@
 
 - Interviewee gets email with invite link
 - Interviewee clicks on link, when user is ready, the environment is deployed (takes 10 minutes)
-
 
 # MISC
 - there should be a selection on the industry try
@@ -79,7 +77,6 @@ I action that you're prepare for a breach
 
 How much will this all cost?
 
-
 given all these security controls, developers will have a difficult time adopting to this
 
 how much will this cost?
@@ -89,3 +86,5 @@ should we continue to backup?
 
 score collection per pod; collector ship off to centralized scoring 
 
+each company should have a slack channel (privately locked)
+slack is missing voice; use discord?
