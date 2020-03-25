@@ -10,12 +10,11 @@ class CourseInput(graphene.InputObjectType):
     ID = graphene.ID()
     title = graphene.String()
     description = graphene.String()
-    activeStep = graphene.Int()
-    length = graphene.Int()
-    totalSteps = graphene.Int()
-    slug = graphene.String()
     cluster = graphene.String()
     category = graphene.String()
+    startDate = graphene.String()
+    dueDate = graphene.String()
+    destroyDate = graphene.String()
 
 class CreateCourseMutation(graphene.Mutation):
     course = graphene.Field(CourseType)
@@ -43,10 +42,9 @@ class CreateCourseMutation(graphene.Mutation):
                 description=course_data.description,
                 category=category,
                 cluster=cluster,
-                activeStep=course_data.activeStep,
-                length=course_data.length,
-                totalSteps=course_data.totalSteps,
-                slug=course_data.slug
+                startDate=course_data.startDate,
+                dueDate=course_data.dueDate,
+                destroyDate=course_data.destroyDate,
             )
 
         try:
@@ -64,14 +62,12 @@ class CreateCourseMutation(graphene.Mutation):
                 course.category = category
             if cluster_data.value:
                 course.cluster = cluster   
-            if course_data.activeStep:
-                course.activeStep = course_data.activeStep
-            if course_data.length:
-                course.length = course_data.length
-            if course_data.totalSteps:
-                course.totalSteps = course_data.totalSteps
-            if course_data.slug:
-                course.slug = course_data.slug
+            if course_data.startDate:
+                course.startDate = course_data.startDate
+            if course_data.dueDate:
+                course.dueDate = course_data.dueDate
+            if course_data.destroyDate:
+                course.destroyDate = course_data.destroyDate
             course.save()
             return UpdateCourseMutation(course=course)
         else:
@@ -124,14 +120,12 @@ class UpdateCourseMutation(graphene.Mutation):
                 course.category = category
             if cluster_data.value:
                 course.cluster = cluster   
-            if course_data.activeStep:
-                course.activeStep = course_data.activeStep
-            if course_data.length:
-                course.length = course_data.length
-            if course_data.totalSteps:
-                course.totalSteps = course_data.totalSteps
-            if course_data.slug:
-                course.slug = course_data.slug
+            if course_data.startDate:
+                course.startDate = course_data.startDate
+            if course_data.dueDate:
+                course.dueDate = course_data.dueDate
+            if course_data.destroyDate:
+                course.destroyDate = course_data.destroyDate
             course.save()
         return UpdateCourseMutation(course=course)
 

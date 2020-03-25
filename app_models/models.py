@@ -203,13 +203,11 @@ class Step(Document):
 class Course(Document):
     meta = {"collection": "courses"}
     ID = ObjectIdField(primary_key=True)
-    activeStep = IntField()
-    description = StringField()
-    length = IntField()
-    slug = StringField()
     title = StringField()
-    totalSteps = IntField()
+    description = StringField()
+    startDate = StringField()
+    dueDate = StringField()
+    destroyDate = StringField()
     category = ReferenceField(Category)
-    report = ReferenceField(Report)
     cluster = ReferenceField(Cluster)
-    steps = ListField(ReferenceField(Step))
+    report = ReferenceField(Report)
