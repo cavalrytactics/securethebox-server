@@ -3,7 +3,7 @@ from app_models.models import Container
 from app_types.types import ContainerType
 
 class ContainerInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateContainerMutation(graphene.Mutation):
     class Arguments:
         container_data = ContainerInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Container.objects.get(pk=id)
+    def get_object(ID):
+        return Container.objects.get(pk=ID)
     def mutate(self, info, container_data=None):
-        container = UpdateContainerMutation.get_object(container_data.id)
+        container = UpdateContainerMutation.get_object(container_data.ID)
         if container_data.value:
             container.value = container_data.value
         container.save()
@@ -34,11 +34,11 @@ class UpdateContainerMutation(graphene.Mutation):
 
 class DeleteContainerMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Container.objects.get(pk=id).delete()
+            Container.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

@@ -3,7 +3,7 @@ from app_models.models import Subscription
 from app_types.types import SubscriptionType
 
 class SubscriptionInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateSubscriptionMutation(graphene.Mutation):
     class Arguments:
         subscription_data = SubscriptionInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Subscription.objects.get(pk=id)
+    def get_object(ID):
+        return Subscription.objects.get(pk=ID)
     def mutate(self, info, subscription_data=None):
-        subscription = UpdateSubscriptionMutation.get_object(subscription_data.id)
+        subscription = UpdateSubscriptionMutation.get_object(subscription_data.ID)
         if subscription_data.value:
             subscription.value = subscription_data.value
         subscription.save()
@@ -34,11 +34,11 @@ class UpdateSubscriptionMutation(graphene.Mutation):
 
 class DeleteSubscriptionMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Subscription.objects.get(pk=id).delete()
+            Subscription.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

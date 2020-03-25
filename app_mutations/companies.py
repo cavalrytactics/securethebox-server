@@ -3,7 +3,7 @@ from app_models.models import Company
 from app_types.types import CompanyType
 
 class CompanyInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateCompanyMutation(graphene.Mutation):
     class Arguments:
         company_data = CompanyInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Company.objects.get(pk=id)
+    def get_object(ID):
+        return Company.objects.get(pk=ID)
     def mutate(self, info, company_data=None):
-        company = UpdateCompanyMutation.get_object(company_data.id)
+        company = UpdateCompanyMutation.get_object(company_data.ID)
         if company_data.value:
             company.value = company_data.value
         company.save()
@@ -34,11 +34,11 @@ class UpdateCompanyMutation(graphene.Mutation):
 
 class DeleteCompanyMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Company.objects.get(pk=id).delete()
+            Company.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

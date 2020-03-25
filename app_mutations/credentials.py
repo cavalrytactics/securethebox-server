@@ -3,7 +3,7 @@ from app_models.models import Credential
 from app_types.types import CredentialType
 
 class CredentialInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateCredentialMutation(graphene.Mutation):
     class Arguments:
         credential_data = CredentialInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Credential.objects.get(pk=id)
+    def get_object(ID):
+        return Credential.objects.get(pk=ID)
     def mutate(self, info, credential_data=None):
-        credential = UpdateCredentialMutation.get_object(credential_data.id)
+        credential = UpdateCredentialMutation.get_object(credential_data.ID)
         if credential_data.value:
             credential.value = credential_data.value
         credential.save()
@@ -34,11 +34,11 @@ class UpdateCredentialMutation(graphene.Mutation):
 
 class DeleteCredentialMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Credential.objects.get(pk=id).delete()
+            Credential.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

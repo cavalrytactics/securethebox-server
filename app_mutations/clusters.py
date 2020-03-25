@@ -3,7 +3,7 @@ from app_models.models import Cluster
 from app_types.types import ClusterType
 
 class ClusterInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     value = graphene.String()
     label = graphene.String()
     status = graphene.String()
@@ -26,10 +26,10 @@ class UpdateClusterMutation(graphene.Mutation):
     class Arguments:
         cluster_data = ClusterInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Cluster.objects.get(pk=id)
+    def get_object(ID):
+        return Cluster.objects.get(pk=ID)
     def mutate(self, info, cluster_data=None):
-        cluster = UpdateClusterMutation.get_object(cluster_data.id)
+        cluster = UpdateClusterMutation.get_object(cluster_data.ID)
         if cluster_data.value:
             cluster.value = cluster_data.value
         if cluster_data.label:
@@ -41,11 +41,11 @@ class UpdateClusterMutation(graphene.Mutation):
 
 class DeleteClusterMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Cluster.objects.get(pk=id).delete()
+            Cluster.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

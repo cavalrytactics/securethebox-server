@@ -3,7 +3,7 @@ from app_models.models import Competency
 from app_types.types import CompetencyType
 
 class CompetencyInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateCompetencyMutation(graphene.Mutation):
     class Arguments:
         competency_data = CompetencyInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Competency.objects.get(pk=id)
+    def get_object(ID):
+        return Competency.objects.get(pk=ID)
     def mutate(self, info, competency_data=None):
-        competency = UpdateCompetencyMutation.get_object(competency_data.id)
+        competency = UpdateCompetencyMutation.get_object(competency_data.ID)
         if competency_data.value:
             competency.value = competency_data.value
         competency.save()
@@ -34,11 +34,11 @@ class UpdateCompetencyMutation(graphene.Mutation):
 
 class DeleteCompetencyMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Competency.objects.get(pk=id).delete()
+            Competency.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

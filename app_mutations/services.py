@@ -4,7 +4,7 @@ from app_types.types import ServiceType, ApplicationType
 from app_mutations.applications import ApplicationInput
 
 class ServiceInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     label = graphene.String()
     value = graphene.String()
     type = graphene.String()
@@ -60,10 +60,10 @@ class UpdateServiceMutation(graphene.Mutation):
     class Arguments:
         service_data = ServiceInput(required=True)
     @staticmethod
-    def get_service_object(id):
-        return Service.objects.get(pk=id)
+    def get_service_object(ID):
+        return Service.objects.get(pk=ID)
     def mutate(self, info, service_data=None):
-        service = UpdateServiceMutation.get_service_object(service_data.id)
+        service = UpdateServiceMutation.get_service_object(service_data.ID)
         if service_data.value:
             service.value = service_data.value
         service.save()
@@ -76,13 +76,13 @@ class UpdateServiceAddApplicationMutation(graphene.Mutation):
         service_data = ServiceInput(required=True)
         application_data = ApplicationInput(required=False)
     @staticmethod
-    def get_service_object(id):
-        return Service.objects.get(pk=id)
-    def get_application_object(id):
-        return Application.objects.get(pk=id)
+    def get_service_object(ID):
+        return Service.objects.get(pk=ID)
+    def get_application_object(ID):
+        return Application.objects.get(pk=ID)
     def mutate(self, info, service_data=None, application_data=None):
-        service = UpdateServiceAddApplicationMutation.get_service_object(service_data.id)
-        application = UpdateServiceAddApplicationMutation.get_application_object(application_data.id)
+        service = UpdateServiceAddApplicationMutation.get_service_object(service_data.ID)
+        application = UpdateServiceAddApplicationMutation.get_application_object(application_data.ID)
         if service_data.value:
             service.value = service_data.value
         if application_data.value:
@@ -98,13 +98,13 @@ class UpdateServiceDeleteApplicationMutation(graphene.Mutation):
         service_data = ServiceInput(required=True)
         application_data = ApplicationInput(required=False)
     @staticmethod
-    def get_service_object(id):
-        return Service.objects.get(pk=id)
-    def get_application_object(id):
-        return Application.objects.get(pk=id)
+    def get_service_object(ID):
+        return Service.objects.get(pk=ID)
+    def get_application_object(ID):
+        return Application.objects.get(pk=ID)
     def mutate(self, info, service_data=None, application_data=None):
-        service = UpdateServiceDeleteApplicationMutation.get_service_object(service_data.id)
-        application = UpdateServiceDeleteApplicationMutation.get_application_object(application_data.id)
+        service = UpdateServiceDeleteApplicationMutation.get_service_object(service_data.ID)
+        application = UpdateServiceDeleteApplicationMutation.get_application_object(application_data.ID)
         if service_data.value:
             service.value = service_data.value
         if application_data.value:
@@ -115,11 +115,11 @@ class UpdateServiceDeleteApplicationMutation(graphene.Mutation):
 
 class DeleteServiceMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Service.objects.get(pk=id).delete()
+            Service.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

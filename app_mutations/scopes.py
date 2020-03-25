@@ -3,7 +3,7 @@ from app_models.models import Scope
 from app_types.types import ScopeType
 
 class ScopeInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     label = graphene.String()
     value = graphene.String()
 
@@ -36,10 +36,10 @@ class UpdateScopeMutation(graphene.Mutation):
     class Arguments:
         scope_data = ScopeInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Scope.objects.get(pk=id)
+    def get_object(ID):
+        return Scope.objects.get(pk=ID)
     def mutate(self, info, scope_data=None):
-        scope = UpdateScopeMutation.get_object(scope_data.id)
+        scope = UpdateScopeMutation.get_object(scope_data.ID)
         if scope_data.value:
             scope.value = scope_data.value
         scope.save()
@@ -47,11 +47,11 @@ class UpdateScopeMutation(graphene.Mutation):
 
 class DeleteScopeMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Scope.objects.get(pk=id).delete()
+            Scope.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

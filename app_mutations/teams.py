@@ -3,7 +3,7 @@ from app_models.models import Team
 from app_types.types import TeamType
 
 class TeamInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateTeamMutation(graphene.Mutation):
     class Arguments:
         team_data = TeamInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Team.objects.get(pk=id)
+    def get_object(ID):
+        return Team.objects.get(pk=ID)
     def mutate(self, info, team_data=None):
-        team = UpdateTeamMutation.get_object(team_data.id)
+        team = UpdateTeamMutation.get_object(team_data.ID)
         if team_data.value:
             team.value = team_data.value
         team.save()
@@ -34,11 +34,11 @@ class UpdateTeamMutation(graphene.Mutation):
 
 class DeleteTeamMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Team.objects.get(pk=id).delete()
+            Team.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

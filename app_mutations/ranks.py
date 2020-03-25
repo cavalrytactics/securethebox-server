@@ -3,7 +3,7 @@ from app_models.models import Rank
 from app_types.types import RankType
 
 class RankInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     coursesComplete = graphene.Int()
     flagsObtained = graphene.Int()
     position = graphene.Int()
@@ -24,10 +24,10 @@ class UpdateRankMutation(graphene.Mutation):
     class Arguments:
         rank_data = RankInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Rank.objects.get(pk=id)
+    def get_object(ID):
+        return Rank.objects.get(pk=ID)
     def mutate(self, info, rank_data=None):
-        rank = UpdateRankMutation.get_object(rank_data.id)
+        rank = UpdateRankMutation.get_object(rank_data.ID)
         if rank_data.value:
             rank.value = rank_data.value
         rank.save()
@@ -35,11 +35,11 @@ class UpdateRankMutation(graphene.Mutation):
 
 class DeleteRankMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Rank.objects.get(pk=id).delete()
+            Rank.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

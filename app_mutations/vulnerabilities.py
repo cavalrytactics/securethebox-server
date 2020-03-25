@@ -3,7 +3,7 @@ from app_models.models import Vulnerability
 from app_types.types import VulnerabilityType
 
 class VulnerabilityInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     value = graphene.String()
     label = graphene.String() 
     type = graphene.String()
@@ -49,10 +49,10 @@ class UpdateVulnerabilityMutation(graphene.Mutation):
         vulnerability_data = VulnerabilityInput(required=True)
 
     @staticmethod
-    def get_object(id):
-        return Vulnerability.objects.get(pk=id)
+    def get_object(ID):
+        return Vulnerability.objects.get(pk=ID)
     def mutate(self, info, vulnerability_data=None):
-        vulnerability = UpdateVulnerabilityMutation.get_object(vulnerability_data.id)
+        vulnerability = UpdateVulnerabilityMutation.get_object(vulnerability_data.ID)
         if vulnerability_data.label:
             vulnerability.label = vulnerability_data.label
         if vulnerability_data.value:
@@ -66,11 +66,11 @@ class UpdateVulnerabilityMutation(graphene.Mutation):
 
 class DeleteVulnerabilityMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Vulnerability.objects.get(pk=id).delete()
+            Vulnerability.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

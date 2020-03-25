@@ -3,7 +3,7 @@ from app_models.models import User
 from app_types.types import UserType
 
 class UserInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateUserMutation(graphene.Mutation):
     class Arguments:
         user_data = UserInput(required=True)
     @staticmethod
-    def get_object(id):
-        return User.objects.get(pk=id)
+    def get_object(ID):
+        return User.objects.get(pk=ID)
     def mutate(self, info, user_data=None):
-        user = UpdateUserMutation.get_object(user_data.id)
+        user = UpdateUserMutation.get_object(user_data.ID)
         if user_data.value:
             user.value = user_data.value
         user.save()
@@ -34,11 +34,11 @@ class UpdateUserMutation(graphene.Mutation):
 
 class DeleteUserMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            User.objects.get(pk=id).delete()
+            User.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

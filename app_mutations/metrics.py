@@ -3,7 +3,7 @@ from app_models.models import Metric
 from app_types.types import MetricType
 
 class MetricInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateMetricMutation(graphene.Mutation):
     class Arguments:
         metric_data = MetricInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Metric.objects.get(pk=id)
+    def get_object(ID):
+        return Metric.objects.get(pk=ID)
     def mutate(self, info, metric_data=None):
-        metric = UpdateMetricMutation.get_object(metric_data.id)
+        metric = UpdateMetricMutation.get_object(metric_data.ID)
         if metric_data.value:
             metric.value = metric_data.value
         metric.save()
@@ -34,11 +34,11 @@ class UpdateMetricMutation(graphene.Mutation):
 
 class DeleteMetricMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Metric.objects.get(pk=id).delete()
+            Metric.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

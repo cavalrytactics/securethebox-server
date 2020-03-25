@@ -3,7 +3,7 @@ from app_models.models import Topic
 from app_types.types import TopicType
 
 class TopicInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateTopicMutation(graphene.Mutation):
     class Arguments:
         topic_data = TopicInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Topic.objects.get(pk=id)
+    def get_object(ID):
+        return Topic.objects.get(pk=ID)
     def mutate(self, info, topic_data=None):
-        topic = UpdateTopicMutation.get_object(topic_data.id)
+        topic = UpdateTopicMutation.get_object(topic_data.ID)
         if topic_data.value:
             topic.value = topic_data.value
         topic.save()
@@ -34,11 +34,11 @@ class UpdateTopicMutation(graphene.Mutation):
 
 class DeleteTopicMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Topic.objects.get(pk=id).delete()
+            Topic.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

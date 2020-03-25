@@ -4,7 +4,7 @@ from app_types.types import UniversityType
 
 
 class UniversityInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     team = graphene.ID()
     domain = graphene.String()
 
@@ -37,11 +37,11 @@ class UpdateUniversityMutation(graphene.Mutation):
         university_data = UniversityInput(required=True)
 
     @staticmethod
-    def get_object(id):
-        return University.objects.get(pk=id)
+    def get_object(ID):
+        return University.objects.get(pk=ID)
 
     def mutate(self, info, university_data=None):
-        university = UpdateUniversityMutation.get_object(university_data.id)
+        university = UpdateUniversityMutation.get_object(university_data.ID)
         if university_data.domain:
             university.domain = university_data.domain
         university.save()
@@ -50,12 +50,12 @@ class UpdateUniversityMutation(graphene.Mutation):
 
 class DeleteUniversityMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
 
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            University.objects.get(pk=id).delete()
+            University.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

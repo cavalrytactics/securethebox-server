@@ -3,7 +3,7 @@ from app_models.models import Category
 from app_types.types import CategoryType
 
 class CategoryInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     label = graphene.String()
     value = graphene.String()
     color = graphene.String()
@@ -38,10 +38,10 @@ class UpdateCategoryMutation(graphene.Mutation):
     class Arguments:
         category_data = CategoryInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Category.objects.get(pk=id)
+    def get_object(ID):
+        return Category.objects.get(pk=ID)
     def mutate(self, info, category_data=None):
-        category = UpdateCategoryMutation.get_object(category_data.id)
+        category = UpdateCategoryMutation.get_object(category_data.ID)
         if category_data.label:
             category.label = category_data.label
         if category_data.value:
@@ -53,11 +53,11 @@ class UpdateCategoryMutation(graphene.Mutation):
 
 class DeleteCategoryMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Category.objects.get(pk=id).delete()
+            Category.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

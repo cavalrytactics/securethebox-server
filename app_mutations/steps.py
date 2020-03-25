@@ -3,7 +3,7 @@ from app_models.models import Step
 from app_types.types import StepType
 
 class StepInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateStepMutation(graphene.Mutation):
     class Arguments:
         step_data = StepInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Step.objects.get(pk=id)
+    def get_object(ID):
+        return Step.objects.get(pk=ID)
     def mutate(self, info, step_data=None):
-        step = UpdateStepMutation.get_object(step_data.id)
+        step = UpdateStepMutation.get_object(step_data.ID)
         if step_data.value:
             step.value = step_data.value
         step.save()
@@ -34,11 +34,11 @@ class UpdateStepMutation(graphene.Mutation):
 
 class DeleteStepMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Step.objects.get(pk=id).delete()
+            Step.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

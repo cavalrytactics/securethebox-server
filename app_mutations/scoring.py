@@ -3,7 +3,7 @@ from app_models.models import Scoring
 from app_types.types import ScoringType
 
 class ScoringInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateScoringMutation(graphene.Mutation):
     class Arguments:
         scoring_data = ScoringInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Scoring.objects.get(pk=id)
+    def get_object(ID):
+        return Scoring.objects.get(pk=ID)
     def mutate(self, info, scoring_data=None):
-        scoring = UpdateScoringMutation.get_object(scoring_data.id)
+        scoring = UpdateScoringMutation.get_object(scoring_data.ID)
         if scoring_data.value:
             scoring.value = scoring_data.value
         scoring.save()
@@ -34,11 +34,11 @@ class UpdateScoringMutation(graphene.Mutation):
 
 class DeleteScoringMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Scoring.objects.get(pk=id).delete()
+            Scoring.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

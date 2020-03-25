@@ -3,7 +3,7 @@ from app_models.models import Dummy
 from app_types.types import DummyType
 
 class DummyInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateDummyMutation(graphene.Mutation):
     class Arguments:
         dummy_data = DummyInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Dummy.objects.get(pk=id)
+    def get_object(ID):
+        return Dummy.objects.get(pk=ID)
     def mutate(self, info, dummy_data=None):
-        dummy = UpdateDummyMutation.get_object(dummy_data.id)
+        dummy = UpdateDummyMutation.get_object(dummy_data.ID)
         if dummy_data.value:
             dummy.value = dummy_data.value
         dummy.save()
@@ -34,11 +34,11 @@ class UpdateDummyMutation(graphene.Mutation):
 
 class DeleteDummyMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Dummy.objects.get(pk=id).delete()
+            Dummy.objects.get(pk=ID).delete()
             success = True
         except:
             success = False

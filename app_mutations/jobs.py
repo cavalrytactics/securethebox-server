@@ -3,7 +3,7 @@ from app_models.models import Job
 from app_types.types import JobType
 
 class JobInput(graphene.InputObjectType):
-    id = graphene.ID()
+    ID = graphene.ID()
     name = graphene.String()
     value = graphene.String()
 
@@ -23,10 +23,10 @@ class UpdateJobMutation(graphene.Mutation):
     class Arguments:
         job_data = JobInput(required=True)
     @staticmethod
-    def get_object(id):
-        return Job.objects.get(pk=id)
+    def get_object(ID):
+        return Job.objects.get(pk=ID)
     def mutate(self, info, job_data=None):
-        job = UpdateJobMutation.get_object(job_data.id)
+        job = UpdateJobMutation.get_object(job_data.ID)
         if job_data.value:
             job.value = job_data.value
         job.save()
@@ -34,11 +34,11 @@ class UpdateJobMutation(graphene.Mutation):
 
 class DeleteJobMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        ID = graphene.ID(required=True)
     success = graphene.Boolean()
-    def mutate(self, info, id):
+    def mutate(self, info, ID):
         try:
-            Job.objects.get(pk=id).delete()
+            Job.objects.get(pk=ID).delete()
             success = True
         except:
             success = False
