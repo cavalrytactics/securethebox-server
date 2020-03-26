@@ -21,6 +21,7 @@ from app_models.models import (
     Solution, 
 	Step,
     Subscription, 
+    Submission, 
 	Team,
     Topic, 
 	University,
@@ -106,6 +107,10 @@ class StepType(MongoengineObjectType):
 class SubscriptionType(MongoengineObjectType):
 	class Meta:
 		model = Subscription
+		interfaces = (relay.Node,)
+class SubmissionType(MongoengineObjectType):
+	class Meta:
+		model = Submission
 		interfaces = (relay.Node,)
 class TeamType(MongoengineObjectType):
 	class Meta:

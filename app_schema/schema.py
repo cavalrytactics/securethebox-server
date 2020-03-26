@@ -22,6 +22,7 @@ from app_models.models import (
     Solution,
     Step,
     Subscription,
+    Submission,
     Team,
     Topic,
     University,
@@ -49,6 +50,7 @@ from app_types.types import (
     SolutionType,
     StepType,
     SubscriptionType,
+    SubmissionType,
     TeamType,
     TopicType,
     UniversityType,
@@ -158,6 +160,11 @@ from app_mutations.subscriptions import (
     UpdateSubscriptionMutation,
     DeleteSubscriptionMutation,
 )
+from app_mutations.submissions import (
+    CreateSubmissionMutation,
+    UpdateSubmissionMutation,
+    DeleteSubmissionMutation,
+)
 from app_mutations.teams import (
     CreateTeamMutation,
     UpdateTeamMutation,
@@ -205,6 +212,7 @@ class Mutations(graphene.ObjectType):
     create_solution = CreateSolutionMutation.Field()
     create_step = CreateStepMutation.Field()
     create_subscription = CreateSubscriptionMutation.Field()
+    create_submission = CreateSubmissionMutation.Field()
     create_team = CreateTeamMutation.Field()
     create_topic = CreateTopicMutation.Field()
     create_university = CreateUniversityMutation.Field()
@@ -233,6 +241,7 @@ class Mutations(graphene.ObjectType):
     update_solution = UpdateSolutionMutation.Field()
     update_step = UpdateStepMutation.Field()
     update_subscription = UpdateSubscriptionMutation.Field()
+    update_submission = UpdateSubmissionMutation.Field()
     update_team = UpdateTeamMutation.Field()
     update_topic = UpdateTopicMutation.Field()
     update_university = UpdateUniversityMutation.Field()
@@ -259,6 +268,7 @@ class Mutations(graphene.ObjectType):
     delete_solution = DeleteSolutionMutation.Field()
     delete_step = DeleteStepMutation.Field()
     delete_subscription = DeleteSubscriptionMutation.Field()
+    delete_submission = DeleteSubmissionMutation.Field()
     delete_team = DeleteTeamMutation.Field()
     delete_topic = DeleteTopicMutation.Field()
     delete_university = DeleteUniversityMutation.Field()
@@ -288,6 +298,7 @@ class Query(graphene.ObjectType):
     solutions = MongoengineConnectionField(SolutionType)
     steps = MongoengineConnectionField(StepType)
     subscriptions = MongoengineConnectionField(SubscriptionType)
+    submissions = MongoengineConnectionField(SubmissionType)
     teams = MongoengineConnectionField(TeamType)
     topics = MongoengineConnectionField(TopicType)
     universities = MongoengineConnectionField(UniversityType)
@@ -315,6 +326,7 @@ class Query(graphene.ObjectType):
     solutions_list = graphene.List(SolutionType)
     steps_list = graphene.List(StepType)
     subscriptions_list = graphene.List(SubscriptionType)
+    submissions_list = graphene.List(SubmissionType)
     teams_list = graphene.List(TeamType)
     topics_list = graphene.List(TopicType)
     universities_list = graphene.List(UniversityType)
@@ -341,6 +353,7 @@ class Query(graphene.ObjectType):
     solution = graphene.Field(SolutionType, ID=graphene.ID(required=True))
     step = graphene.Field(StepType, ID=graphene.ID(required=True))
     subscription = graphene.Field(SubscriptionType, ID=graphene.ID(required=True))
+    submission = graphene.Field(SubmissionType, ID=graphene.ID(required=True))
     team = graphene.Field(TeamType, ID=graphene.ID(required=True))
     topic = graphene.Field(TopicType, ID=graphene.ID(required=True))
     university = graphene.Field(UniversityType, ID=graphene.ID(required=True))
@@ -387,6 +400,8 @@ class Query(graphene.ObjectType):
         return Step.objects.get(pk=ID)
     def resolve_subscription(root, info, ID):
         return Subscription.objects.get(pk=ID)
+    def resolve_submission(root, info, ID):
+        return Submission.objects.get(pk=ID)
     def resolve_team(root, info, ID):
         return Team.objects.get(pk=ID)
     def resolve_topic(root, info, ID):
@@ -436,6 +451,8 @@ class Query(graphene.ObjectType):
         return Step.objects.all()
     def resolve_subscriptions_list(self, info):
         return Subscription.objects.all()
+    def resolve_submissions_list(self, info):
+        return Submission.objects.all()
     def resolve_teams_list(self, info):
         return Team.objects.all()
     def resolve_topics_list(self, info):
@@ -470,6 +487,7 @@ schema = graphene.Schema(
         StepType,
         ServiceType,
         SubscriptionType,
+        SubmissionType,
         TeamType,
         TopicType,
         UserType,

@@ -42,11 +42,24 @@
     "googleCloudRunImageName": "securethebox-server",
     "googleCloudRunRegion": "us-central1",
     "googleCloudRunPlatform": "managed",
+    "googleCloudTasksServiceAccountEmail": "stb-cloud-tasks-sa@securethebox-client.iam.gserviceaccount.com",
+    "googleCloudTasksServiceAccountFile": "securethebox-client-stb-cloud-tasks-sa.json",
+    "googleCloudTasksProjectId": "securethebox-client",
+    "googleCloudTasksLocation": "us-central1",
+    "googleCloudTasksQueueIds": [
+        "create-kubernetes-cluster-test"
+    ],
+    "googleCloudTasksQueueTaskNames": [
+        "hello"
+    ],
+    "googleCloudTasksQueueDelay": 10,
+    "googleCloudTasksQueuePayload": "hello",
+    "googleCloudTasksQueueUrl": "https://e28f7bb4.ngrok.io/task_handler",
     "googleCloudDnsParentDomain": "securethebox.us",
     "googleCloudDnsParentManagedZone": "securethebox-us",
     "googleCloudDnsSubDomainPrefix": "us-central1-a",
     "googleCloudDnsSubManagedZonePrefix": "us-central1-a",
-    "graphqlSubjects":[
+    "graphqlSubjects": [
         "applications",
         "categories",
         "clusters",

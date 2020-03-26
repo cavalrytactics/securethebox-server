@@ -8,6 +8,7 @@ jobs:
     - sudo apt-get update -y
     - sudo apt-get install google-cloud-sdk -y
     - sudo apt-get install kubectl -y
+    - gcloud components update
     - cd ./secrets/
     - openssl aes-256-cbc -K $encrypted_0d9f442b0df2_key -iv $encrypted_0d9f442b0df2_iv
       -in secrets.tar.enc -out secrets.tar -d && tar xvf secrets.tar

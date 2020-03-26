@@ -118,10 +118,21 @@ class Solution(Document):
     value = StringField()
     label = StringField()
 
+class Submission(Document):
+    meta = {"collection": "submissions"}
+    ID = ObjectIdField(primary_key=True)
+    author = StringField()
+    verdict = StringField()
+    creationTime = StringField() 
+    relativeTime = StringField() 
+    points = IntField()
+    content = StringField()
+    
 class Problem(Document):
     meta = {"collection": "problems"}
     ID = ObjectIdField(primary_key=True)
     solutions = ReferenceField(Solution)
+    submissions = ReferenceField(Submission)
     scope = ReferenceField(Scope)
     attempts = IntField()
     value = StringField()

@@ -27,16 +27,16 @@ class CreateCourseMutation(graphene.Mutation):
         cluster_data = ClusterInput(required=False)
         
     @staticmethod
-    def get_category_object_by_value(value):
-        return Category.objects.get(value=value)
+    def get_category_object_by_ID(ID):
+        return Category.objects.get(pk=ID)
 
     @staticmethod
-    def get_cluster_object_by_value(value):
-        return Cluster.objects.get(value=value)
+    def get_cluster_object_by_ID(ID):
+        return Cluster.objects.get(ID=ID)
     
     def mutate(self, info, course_data=None,  category_data=None, cluster_data=None):
-        category = CreateCourseMutation.get_category_object_by_value(category_data.value)
-        cluster = CreateCourseMutation.get_cluster_object_by_value(cluster_data.value)
+        category = CreateCourseMutation.get_category_object_by_ID(category_data.ID)
+        cluster = CreateCourseMutation.get_cluster_object_by_ID(cluster_data.ID)
         course = Course(
                 title=course_data.title,
                 description=course_data.description,
@@ -87,23 +87,23 @@ class UpdateCourseMutation(graphene.Mutation):
         course_data = CourseInput(required=True)
         category_data = CategoryInput(required=False)
         cluster_data = ClusterInput(required=False)
-    
+
     @staticmethod
-    def get_category_object_by_value(value):
-        return Category.objects.get(value=value)
-    
-    @staticmethod
-    def get_cluster_object_by_value(value):
-        return Cluster.objects.get(value=value)
-    
-    @staticmethod
-    def get_object(ID):
+    def get_course_object_by_ID(ID):
         return Course.objects.get(pk=ID)
     
-    def mutate(self, info, course_data=None):
-        course = UpdateCourseMutation.get_object(course_data.ID)
-        category = UpdateCourseMutation.get_category_object_by_value(category_data.value)
-        cluster = UpdateCourseMutation.get_cluster_object_by_value(cluster_data.value)
+    @staticmethod
+    def get_category_object_by_ID(ID):
+        return Category.objects.get(pk=ID)
+
+    @staticmethod
+    def get_cluster_object_by_ID(ID):
+        return Cluster.objects.get(ID=ID)
+    
+    def mutate(self, info, course_data=None, category_data=None, cluster_data=None):
+        course = UpdateCourseMutation.get_course_object_by_ID(course_data.ID)
+        category = UpdateCourseMutation.get_category_object_by_ID(category_data.ID)
+        cluster = UpdateCourseMutation.get_cluster_object_by_ID(cluster_data.ID)
 
         try:
             course_object = Course.objects.get(pk=course_data.ID)
