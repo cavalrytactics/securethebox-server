@@ -114,18 +114,3 @@ def test_purgeAllTasksInTaskQueue():
     for queueId in pytest.globalData["googleCloudTasksQueueIds"]:
         c.setQueueId(queueId)
         assert c.purgeAllTasksInTaskQueue() == True
-
-# def test_pauseTaskQueue():
-#     loadGlobalData()
-#     for queueId in pytest.globalData["googleCloudTasksQueueIds"]:
-#         c.setQueueId(queueId)
-#         assert c.pauseTaskQueue() == True
-
-# def test_resumeTaskQueue():
-#     loadGlobalData()
-#     for queueId in pytest.globalData["googleCloudTasksQueueIds"]:
-#         c.setQueueId(queueId)
-#         assert c.resumeTaskQueue() == True
-# def test_purgeAllTasksInTaskQueue():
-#     loadGlobalData()
-

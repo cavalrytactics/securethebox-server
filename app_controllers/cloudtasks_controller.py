@@ -8,6 +8,7 @@ from google.api_core import exceptions
 from google.protobuf import timestamp_pb2
 from typing import Tuple, List
 import json
+import uuid 
 """
 Enable API manually
 
@@ -84,23 +85,23 @@ class CloudTasksController():
 
     def setQueueId(self, queueId: str) -> bool:
         try:
-            self.queueId = queueId+"-"+str(1)
+            self.queueId = queueId
             return True
         except:
             return False
 
-    def incrementQueueId(self) -> bool:
+    def incrementTaskName(self) -> bool:
         try:
-            name = self.queueId.split("-")[0]
-            number = self.queueId.split("-")[1]
-            self.queueId = f"{name}-{number}" 
+            name = self.taskName.split("-")[0]
+            number = self.taskName.split("-")[1]
+            self.taskName = f"{name}-{number}"
             return True
         except:
             return False
 
     def setTaskName(self, taskName: str) -> bool:
         try:
-            self.taskName = taskName
+            self.taskName = taskName+"-"+str(uuid.uuid4())
             return True
         except:
             return False
@@ -138,13 +139,14 @@ class CloudTasksController():
         try:
             client = tasks_v2.CloudTasksClient()
             parent = client.location_path(self.projectId, self.location)
-            queuePath = client.queue_path(self.projectId, self.location, self.queueId)
-            queue = {"name": queuePath} 
+            queuePath = client.queue_path(
+                self.projectId, self.location, self.queueId)
+            queue = {"name": queuePath}
             try:
                 client.create_queue(parent, queue)
-                return True 
+                return True
             except exceptions.GoogleAPICallError as error:
-                if "Queue already exists" in str(error):
+                if "Queue already exists" in str(error) or "The queue cannot be created because a queue with this name existed too recently" in str(error):
                     return True
         except:
             return False
@@ -152,9 +154,10 @@ class CloudTasksController():
     def pauseTaskQueue(self) -> bool:
         try:
             client = tasks_v2.CloudTasksClient()
-            queuePath = client.queue_path(self.projectId, self.location, self.queueId)
+            queuePath = client.queue_path(
+                self.projectId, self.location, self.queueId)
             try:
-                client.pause_queue(queuePath) 
+                client.pause_queue(queuePath)
                 return True
             except exceptions.GoogleAPICallError as error:
                 if "Queue does not exist" in str(error):
@@ -167,9 +170,10 @@ class CloudTasksController():
     def resumeTaskQueue(self) -> bool:
         try:
             client = tasks_v2.CloudTasksClient()
-            queuePath = client.queue_path(self.projectId, self.location, self.queueId)
+            queuePath = client.queue_path(
+                self.projectId, self.location, self.queueId)
             try:
-                client.resume_queue(queuePath) 
+                client.resume_queue(queuePath)
                 return True
             except exceptions.GoogleAPICallError as error:
                 if "Queue does not exist" in str(error):
@@ -182,9 +186,10 @@ class CloudTasksController():
     def purgeAllTasksInTaskQueue(self) -> bool:
         try:
             client = tasks_v2.CloudTasksClient()
-            queuePath = client.queue_path(self.projectId, self.location, self.queueId)
+            queuePath = client.queue_path(
+                self.projectId, self.location, self.queueId)
             try:
-                client.purge_queue(queuePath) 
+                client.purge_queue(queuePath)
                 return True
             except exceptions.GoogleAPICallError as error:
                 if "Queue does not exist" in str(error):
@@ -193,12 +198,6 @@ class CloudTasksController():
                     return False
         except:
             return False
-        # try:
-        #     subprocess.Popen(
-        #         [f"echo y | gcloud tasks queues purge {self.queueId}"], shell=True).wait()
-        #     return True
-        # except:
-        #     return False
 
     def createTaskInQueue(self) -> Tuple[bool, str]:
         try:
@@ -245,17 +244,18 @@ class CloudTasksController():
                 if "Requested entity already exists" in str(error):
                     return True, error
                 if "The task cannot be created because a task with this name existed too recently" in error:
-                    self.incrementQueueId()
-                    self.createTaskInQueue() 
+                    return True, error
         except:
             print("Error in createTaskInQueue")
             return False, "failed"
 
     def listTasksInQueue(self) -> (bool):
         try:
-            command = ["gcloud","tasks", "list", "--queue", f"{self.queueId}", "--format", "json"]
+            command = ["gcloud", "tasks", "list", "--queue",
+                       f"{self.queueId}", "--format", "json"]
             output = check_output(command)
             taskListJson = json.loads(output)
-            return True, taskListJson
+            if taskListJson == [] or len(taskListJson) > 0:
+                return True, taskListJson
         except:
             return False, []
