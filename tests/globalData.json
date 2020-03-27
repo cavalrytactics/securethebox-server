@@ -50,7 +50,7 @@
         "create-kubernetes-cluster-test"
     ],
     "googleCloudTasksQueueTaskNames": [
-        "hello"
+        "hello3"
     ],
     "googleCloudTasksQueueDelay": 10,
     "googleCloudTasksQueuePayload": "hello",

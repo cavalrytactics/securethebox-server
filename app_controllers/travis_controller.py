@@ -2,7 +2,6 @@ import subprocess
 import json
 import os
 import subprocess
-from subprocess import check_output
 from os import path
 import yaml
 import re

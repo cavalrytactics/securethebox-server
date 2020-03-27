@@ -1,11 +1,13 @@
 import subprocess
+from subprocess import check_output
 import os
 from os import path
 import datetime
 from google.cloud import tasks_v2
+from google.api_core import exceptions
 from google.protobuf import timestamp_pb2
 from typing import Tuple, List
-
+import json
 """
 Enable API manually
 
@@ -17,6 +19,7 @@ Cloud Tasks Service Agent
 Cloud Tasks Task Deleter
 *Enable Domain Wide Delegation (Allows Service Account Requests)
 """
+
 
 class CloudTasksController():
     def __init__(self):
@@ -60,7 +63,7 @@ class CloudTasksController():
 
     def setLocation(self, location: str) -> bool:
         try:
-            self.location= location
+            self.location = location
             subprocess.Popen(
                 [f"gcloud config set run/region {self.location} >> /dev/null 2>&1"], shell=True).wait()
             return True
@@ -69,16 +72,28 @@ class CloudTasksController():
 
     def setAccount(self) -> bool:
         try:
-            subprocess.Popen([f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName} >> /dev/null 2>&1"],shell=True).wait()
-            subprocess.Popen([f"gcloud config set project {self.projectId} >> /dev/null 2>&1"],shell=True).wait()
-            subprocess.Popen([f"gcloud config set account {self.serviceAccountEmailAddress} >> /dev/null 2>&1"],shell=True).wait()
+            subprocess.Popen(
+                [f"gcloud auth activate-service-account --key-file {self.currentDirectory}/secrets/{self.fileName} >> /dev/null 2>&1"], shell=True).wait()
+            subprocess.Popen(
+                [f"gcloud config set project {self.projectId} >> /dev/null 2>&1"], shell=True).wait()
+            subprocess.Popen(
+                [f"gcloud config set account {self.serviceAccountEmailAddress} >> /dev/null 2>&1"], shell=True).wait()
             return True
         except:
             return False
 
     def setQueueId(self, queueId: str) -> bool:
         try:
-            self.queueId = queueId
+            self.queueId = queueId+"-"+str(1)
+            return True
+        except:
+            return False
+
+    def incrementQueueId(self) -> bool:
+        try:
+            name = self.queueId.split("-")[0]
+            number = self.queueId.split("-")[1]
+            self.queueId = f"{name}-{number}" 
             return True
         except:
             return False
@@ -121,48 +136,83 @@ class CloudTasksController():
 
     def createTaskQueue(self) -> bool:
         try:
-            subprocess.Popen(
-                [f"gcloud tasks queues create {self.queueId}"], shell=True).wait()
-            return True
+            client = tasks_v2.CloudTasksClient()
+            parent = client.location_path(self.projectId, self.location)
+            queuePath = client.queue_path(self.projectId, self.location, self.queueId)
+            queue = {"name": queuePath} 
+            try:
+                client.create_queue(parent, queue)
+                return True 
+            except exceptions.GoogleAPICallError as error:
+                if "Queue already exists" in str(error):
+                    return True
         except:
             return False
 
     def pauseTaskQueue(self) -> bool:
         try:
-            subprocess.Popen(
-                [f"gcloud tasks queues pause {self.queueId}"], shell=True).wait()
-            return True
+            client = tasks_v2.CloudTasksClient()
+            queuePath = client.queue_path(self.projectId, self.location, self.queueId)
+            try:
+                client.pause_queue(queuePath) 
+                return True
+            except exceptions.GoogleAPICallError as error:
+                if "Queue does not exist" in str(error):
+                    return True
+                else:
+                    return False
         except:
             return False
 
     def resumeTaskQueue(self) -> bool:
         try:
-            subprocess.Popen(
-                [f"gcloud tasks queues resume {self.queueId}"], shell=True).wait()
-            return True
+            client = tasks_v2.CloudTasksClient()
+            queuePath = client.queue_path(self.projectId, self.location, self.queueId)
+            try:
+                client.resume_queue(queuePath) 
+                return True
+            except exceptions.GoogleAPICallError as error:
+                if "Queue does not exist" in str(error):
+                    return True
+                else:
+                    return False
         except:
             return False
 
     def purgeAllTasksInTaskQueue(self) -> bool:
         try:
-            subprocess.Popen(
-                [f"gcloud tasks queues purge {self.queueId}"], shell=True).wait()
-            return True
+            client = tasks_v2.CloudTasksClient()
+            queuePath = client.queue_path(self.projectId, self.location, self.queueId)
+            try:
+                client.purge_queue(queuePath) 
+                return True
+            except exceptions.GoogleAPICallError as error:
+                if "Queue does not exist" in str(error):
+                    return True
+                else:
+                    return False
         except:
             return False
-    
+        # try:
+        #     subprocess.Popen(
+        #         [f"echo y | gcloud tasks queues purge {self.queueId}"], shell=True).wait()
+        #     return True
+        # except:
+        #     return False
+
     def createTaskInQueue(self) -> Tuple[bool, str]:
         try:
             client = tasks_v2.CloudTasksClient()
             # Construct the fully qualified queue name.
-            parent = client.queue_path(self.projectId, self.location, self.queueId)
+            parent = client.queue_path(
+                self.projectId, self.location, self.queueId)
 
             # Construct the request body.
             task = {
-                    'http_request': {  # Specify the type of request.
-                        'http_method': 'POST',
-                        'url': self.taskUrl
-                    }
+                'http_request': {  # Specify the type of request.
+                    'http_method': 'POST',
+                    'url': self.taskUrl
+                }
             }
 
             if self.taskPayload is not None:
@@ -188,10 +238,24 @@ class CloudTasksController():
                 task['name'] = f"projects/{self.projectId}/locations/{self.location}/queues/{self.queueId}/tasks/{self.taskName}"
 
             # Use the client to build and send the task.
-            response = client.create_task(parent, task)
-            print(response)           
-            return True, response
+            try:
+                response = client.create_task(parent, task)
+                return True, response
+            except exceptions.GoogleAPICallError as error:
+                if "Requested entity already exists" in str(error):
+                    return True, error
+                if "The task cannot be created because a task with this name existed too recently" in error:
+                    self.incrementQueueId()
+                    self.createTaskInQueue() 
         except:
             print("Error in createTaskInQueue")
-            return False, "failed" 
-            
+            return False, "failed"
+
+    def listTasksInQueue(self) -> (bool):
+        try:
+            command = ["gcloud","tasks", "list", "--queue", f"{self.queueId}", "--format", "json"]
+            output = check_output(command)
+            taskListJson = json.loads(output)
+            return True, taskListJson
+        except:
+            return False, []

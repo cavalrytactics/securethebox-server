@@ -74,9 +74,10 @@ def test_setTaskPayload():
 
 def test_createTaskInQueue():
     loadGlobalData()
+    c.setProjectId(pytest.globalData["googleCloudTasksProjectId"])
+    c.setLocation(pytest.globalData["googleCloudTasksLocation"])
     for queueId in pytest.globalData["googleCloudTasksQueueIds"]:
         c.setQueueId(queueId)
-        c.setLocation(pytest.globalData["googleCloudTasksLocation"])
         c.setTaskUrl(pytest.globalData["googleCloudTasksQueueUrl"])
         for task in pytest.globalData["googleCloudTasksQueueTaskNames"]:
             c.setTaskName(task)
@@ -84,6 +85,35 @@ def test_createTaskInQueue():
             c.setTaskPayload(pytest.globalData["googleCloudTasksQueuePayload"])
             value, response = c.createTaskInQueue()
             assert value == True
+
+def test_listTasksInQueue():
+    loadGlobalData()
+    for queueId in pytest.globalData["googleCloudTasksQueueIds"]:
+        c.setQueueId(queueId)
+        value, taskListJson = c.listTasksInQueue()
+        assert value == True
+
+def test_pauseTaskQueue():
+    loadGlobalData()
+    c.setProjectId(pytest.globalData["googleCloudTasksProjectId"])
+    c.setLocation(pytest.globalData["googleCloudTasksLocation"])
+    for queueId in pytest.globalData["googleCloudTasksQueueIds"]:
+        c.setQueueId(queueId)
+        c.pauseTaskQueue()
+
+def test_resumeTaskQueue():
+    loadGlobalData()
+    c.setProjectId(pytest.globalData["googleCloudTasksProjectId"])
+    c.setLocation(pytest.globalData["googleCloudTasksLocation"])
+    for queueId in pytest.globalData["googleCloudTasksQueueIds"]:
+        c.setQueueId(queueId)
+        c.resumeTaskQueue()
+
+def test_purgeAllTasksInTaskQueue():
+    loadGlobalData()
+    for queueId in pytest.globalData["googleCloudTasksQueueIds"]:
+        c.setQueueId(queueId)
+        assert c.purgeAllTasksInTaskQueue() == True
 
 # def test_pauseTaskQueue():
 #     loadGlobalData()
