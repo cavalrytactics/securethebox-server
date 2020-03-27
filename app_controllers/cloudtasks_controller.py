@@ -90,15 +90,6 @@ class CloudTasksController():
         except:
             return False
 
-    def incrementTaskName(self) -> bool:
-        try:
-            name = self.taskName.split("-")[0]
-            number = self.taskName.split("-")[1]
-            self.taskName = f"{name}-{number}"
-            return True
-        except:
-            return False
-
     def setTaskName(self, taskName: str) -> bool:
         try:
             self.taskName = taskName+"-"+str(uuid.uuid4())
@@ -123,14 +114,6 @@ class CloudTasksController():
     def setTaskPayload(self, taskPayload: str) -> bool:
         try:
             self.taskPayload = taskPayload
-            return True
-        except:
-            return False
-
-    def deleteTaskQueue(self) -> bool:
-        try:
-            subprocess.Popen(
-                [f"echo y | gcloud tasks queues delete {self.queueId}"], shell=True).wait()
             return True
         except:
             return False
