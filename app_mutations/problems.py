@@ -1,7 +1,7 @@
 import graphene
 from app_models.models import Problem
 from app_types.types import ProblemType
-from bson import ObjectId 
+from bson import ObjectId
 
 class ProblemInput(graphene.InputObjectType):
     ID = graphene.ID()
@@ -33,7 +33,7 @@ class CreateProblemMutation(graphene.Mutation):
         )
 
         try:
-            problem_object = Problem.objects.get(value=problem_data.value) 
+            problem_object = Problem.objects.get(value=problem_data.value)
         except Problem.DoesNotExist:
             problem_object = None
 
@@ -47,7 +47,7 @@ class CreateProblemMutation(graphene.Mutation):
             if problem_data.startDate:
                 problem.startDate = problem_data.startDate
             if problem_data.dueDate:
-                problem.dueDate = problem_data.dueDate 
+                problem.dueDate = problem_data.dueDate
             if problem_data.rejectDate:
                 problem.rejectDate = problem_data.rejectDate
             if problem_data.points:
@@ -88,7 +88,7 @@ class UpdateProblemMutation(graphene.Mutation):
             if problem_data.startDate:
                 problem.startDate = problem_data.startDate
             if problem_data.dueDate:
-                problem.dueDate = problem_data.dueDate 
+                problem.dueDate = problem_data.dueDate
             if problem_data.rejectDate:
                 problem.rejectDate = problem_data.rejectDate
             if problem_data.points:

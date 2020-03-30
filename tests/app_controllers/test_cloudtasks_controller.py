@@ -47,12 +47,6 @@ def test_setQueueId():
     for queueId in pytest.globalData["googleCloudTasksQueueIds"]:
         assert c.setQueueId(queueId) == True
 
-# def test_deleteTaskQueue():
-#     loadGlobalData()
-#     for queueId in pytest.globalData["googleCloudTasksQueueIds"]:
-#         c.setQueueId(queueId)
-#         assert c.deleteTaskQueue() == True
-
 def test_createTaskQueue():
     loadGlobalData()
     for queueId in pytest.globalData["googleCloudTasksQueueIds"]:

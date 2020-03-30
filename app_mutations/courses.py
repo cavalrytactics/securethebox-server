@@ -20,12 +20,12 @@ class CreateCourseMutation(graphene.Mutation):
     course = graphene.Field(CourseType)
     category = graphene.Field(CategoryType)
     cluster = graphene.Field(ClusterType)
-    
+
     class Arguments:
         course_data = CourseInput(required=True)
         category_data = CategoryInput(required=False)
         cluster_data = ClusterInput(required=False)
-        
+
     @staticmethod
     def get_category_object_by_ID(ID):
         return Category.objects.get(pk=ID)
@@ -33,7 +33,7 @@ class CreateCourseMutation(graphene.Mutation):
     @staticmethod
     def get_cluster_object_by_ID(ID):
         return Cluster.objects.get(ID=ID)
-    
+
     def mutate(self, info, course_data=None,  category_data=None, cluster_data=None):
         category = CreateCourseMutation.get_category_object_by_ID(category_data.ID)
         cluster = CreateCourseMutation.get_cluster_object_by_ID(cluster_data.ID)
@@ -61,7 +61,7 @@ class CreateCourseMutation(graphene.Mutation):
             if category_data.value:
                 course.category = category
             if cluster_data.value:
-                course.cluster = cluster   
+                course.cluster = cluster
             if course_data.startDate:
                 course.startDate = course_data.startDate
             if course_data.dueDate:
@@ -82,7 +82,7 @@ class UpdateCourseMutation(graphene.Mutation):
     course = graphene.Field(CourseType)
     category = graphene.Field(CategoryType)
     cluster = graphene.Field(ClusterType)
-    
+
     class Arguments:
         course_data = CourseInput(required=True)
         category_data = CategoryInput(required=False)
@@ -91,7 +91,7 @@ class UpdateCourseMutation(graphene.Mutation):
     @staticmethod
     def get_course_object_by_ID(ID):
         return Course.objects.get(pk=ID)
-    
+
     @staticmethod
     def get_category_object_by_ID(ID):
         return Category.objects.get(pk=ID)
@@ -99,7 +99,7 @@ class UpdateCourseMutation(graphene.Mutation):
     @staticmethod
     def get_cluster_object_by_ID(ID):
         return Cluster.objects.get(ID=ID)
-    
+
     def mutate(self, info, course_data=None, category_data=None, cluster_data=None):
         course = UpdateCourseMutation.get_course_object_by_ID(course_data.ID)
         category = UpdateCourseMutation.get_category_object_by_ID(category_data.ID)
@@ -119,7 +119,7 @@ class UpdateCourseMutation(graphene.Mutation):
             if category_data.value:
                 course.category = category
             if cluster_data.value:
-                course.cluster = cluster   
+                course.cluster = cluster
             if course_data.startDate:
                 course.startDate = course_data.startDate
             if course_data.dueDate:

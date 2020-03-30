@@ -125,10 +125,12 @@ class CloudTasksController():
             queuePath = client.queue_path(
                 self.projectId, self.location, self.queueId)
             queue = {"name": queuePath}
+            print(queue)
             try:
                 client.create_queue(parent, queue)
                 return True
             except exceptions.GoogleAPICallError as error:
+                print(error)
                 if "Queue already exists" in str(error) or "The queue cannot be created because a queue with this name existed too recently" in str(error):
                     return True
         except:

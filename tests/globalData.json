@@ -47,10 +47,10 @@
     "googleCloudTasksProjectId": "securethebox-client",
     "googleCloudTasksLocation": "us-central1",
     "googleCloudTasksQueueIds": [
-        "create-kubernetes-cluster-test-2"
+        "create-kubernetes-cluster-test-3"
     ],
     "googleCloudTasksQueueTaskNames": [
-        "hello-1"
+        "hello-2"
     ],
     "googleCloudTasksQueueDelay": 10,
     "googleCloudTasksQueuePayload": "hello",

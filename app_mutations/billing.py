@@ -1,7 +1,7 @@
 import graphene
 from app_models.models import Billing, Company
 from app_types.types import BillingType, CompanyType
-from app_mutations.companies import CompanyInput 
+from app_mutations.companies import CompanyInput
 from bson import ObjectId
 
 class BillingInput(graphene.InputObjectType):
