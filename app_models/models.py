@@ -21,13 +21,13 @@ class Vulnerability(Document):
     type = StringField()
     exploitDbUrl = URLField()
 
-class Subscription(Document):
-    meta = {"collection": "subscriptions"}
-    ID = ObjectIdField(primary_key=True)
-    stripeCustomerPlan = StringField()
-    stripeCustomerId = StringField()
-    stripeCustomerSubscriptionId = StringField()
-    active = BooleanField()
+# class Subscription(Document):
+#     meta = {"collection": "subscriptions"}
+#     ID = ObjectIdField(primary_key=True)
+#     stripeCustomerPlan = StringField()
+#     stripeCustomerId = StringField()
+#     stripeCustomerSubscriptionId = StringField()
+#     active = BooleanField()
 
 class Rank(Document):
     meta = {"collection": "ranks"}
@@ -43,7 +43,7 @@ class User(Document):
     email = EmailField()
     level = IntField()
     rank = ReferenceField(Rank)
-    subscription = ReferenceField(Subscription)
+    # subscription = ReferenceField(Subscription)
     admin = BooleanField()
     recruiter = BooleanField()
     loggedIn = BooleanField()

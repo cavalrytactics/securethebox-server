@@ -1,3 +1,5 @@
+from rx import Observable
+import random
 import graphene
 from graphene.relay import Node
 from graphene_mongo.fields import MongoengineConnectionField
@@ -21,7 +23,7 @@ from app_models.models import (
     Service,
     Solution,
     Step,
-    Subscription,
+    # Subscription,
     Submission,
     Team,
     Topic,
@@ -49,7 +51,7 @@ from app_types.types import (
     ServiceType,
     SolutionType,
     StepType,
-    SubscriptionType,
+    # SubscriptionType,
     SubmissionType,
     TeamType,
     TopicType,
@@ -155,11 +157,11 @@ from app_mutations.steps import (
     UpdateStepMutation,
     DeleteStepMutation,
 )
-from app_mutations.subscriptions import (
-    CreateSubscriptionMutation,
-    UpdateSubscriptionMutation,
-    DeleteSubscriptionMutation,
-)
+# from app_mutations.subscriptions import (
+#     CreateSubscriptionMutation,
+#     UpdateSubscriptionMutation,
+#     DeleteSubscriptionMutation,
+# )
 from app_mutations.submissions import (
     CreateSubmissionMutation,
     UpdateSubmissionMutation,
@@ -211,7 +213,7 @@ class Mutations(graphene.ObjectType):
     create_service = CreateServiceMutation.Field()
     create_solution = CreateSolutionMutation.Field()
     create_step = CreateStepMutation.Field()
-    create_subscription = CreateSubscriptionMutation.Field()
+    # create_subscription = CreateSubscriptionMutation.Field()
     create_submission = CreateSubmissionMutation.Field()
     create_team = CreateTeamMutation.Field()
     create_topic = CreateTopicMutation.Field()
@@ -240,7 +242,7 @@ class Mutations(graphene.ObjectType):
     update_service_delete_application = UpdateServiceDeleteApplicationMutation.Field()
     update_solution = UpdateSolutionMutation.Field()
     update_step = UpdateStepMutation.Field()
-    update_subscription = UpdateSubscriptionMutation.Field()
+    # update_subscription = UpdateSubscriptionMutation.Field()
     update_submission = UpdateSubmissionMutation.Field()
     update_team = UpdateTeamMutation.Field()
     update_topic = UpdateTopicMutation.Field()
@@ -267,7 +269,7 @@ class Mutations(graphene.ObjectType):
     delete_service = DeleteServiceMutation.Field()
     delete_solution = DeleteSolutionMutation.Field()
     delete_step = DeleteStepMutation.Field()
-    delete_subscription = DeleteSubscriptionMutation.Field()
+    # delete_subscription = DeleteSubscriptionMutation.Field()
     delete_submission = DeleteSubmissionMutation.Field()
     delete_team = DeleteTeamMutation.Field()
     delete_topic = DeleteTopicMutation.Field()
@@ -276,6 +278,7 @@ class Mutations(graphene.ObjectType):
     delete_vulnerability = DeleteVulnerabilityMutation.Field()
 
 class Query(graphene.ObjectType):
+    base = graphene.String()
     node = Node.Field()
 
     applications = MongoengineConnectionField(ApplicationType)
@@ -297,7 +300,7 @@ class Query(graphene.ObjectType):
     services = MongoengineConnectionField(ServiceType)
     solutions = MongoengineConnectionField(SolutionType)
     steps = MongoengineConnectionField(StepType)
-    subscriptions = MongoengineConnectionField(SubscriptionType)
+    # subscriptions = MongoengineConnectionField(SubscriptionType)
     submissions = MongoengineConnectionField(SubmissionType)
     teams = MongoengineConnectionField(TeamType)
     topics = MongoengineConnectionField(TopicType)
@@ -325,7 +328,7 @@ class Query(graphene.ObjectType):
     services_list = graphene.List(ServiceType)
     solutions_list = graphene.List(SolutionType)
     steps_list = graphene.List(StepType)
-    subscriptions_list = graphene.List(SubscriptionType)
+    # subscriptions_list = graphene.List(SubscriptionType)
     submissions_list = graphene.List(SubmissionType)
     teams_list = graphene.List(TeamType)
     topics_list = graphene.List(TopicType)
@@ -352,7 +355,7 @@ class Query(graphene.ObjectType):
     service = graphene.Field(ServiceType, ID=graphene.ID(required=True))
     solution = graphene.Field(SolutionType, ID=graphene.ID(required=True))
     step = graphene.Field(StepType, ID=graphene.ID(required=True))
-    subscription = graphene.Field(SubscriptionType, ID=graphene.ID(required=True))
+    # subscription = graphene.Field(SubscriptionType, ID=graphene.ID(required=True))
     submission = graphene.Field(SubmissionType, ID=graphene.ID(required=True))
     team = graphene.Field(TeamType, ID=graphene.ID(required=True))
     topic = graphene.Field(TopicType, ID=graphene.ID(required=True))
@@ -398,8 +401,8 @@ class Query(graphene.ObjectType):
         return Solution.objects.get(pk=ID)
     def resolve_step(root, info, ID):
         return Step.objects.get(pk=ID)
-    def resolve_subscription(root, info, ID):
-        return Subscription.objects.get(pk=ID)
+    # def resolve_subscription(root, info, ID):
+    #     return Subscription.objects.get(pk=ID)
     def resolve_submission(root, info, ID):
         return Submission.objects.get(pk=ID)
     def resolve_team(root, info, ID):
@@ -426,7 +429,7 @@ class Query(graphene.ObjectType):
     def resolve_competencies_list(self, info):
         return Competency.objects.all()
     def resolve_containers_list(self, info):
-        return Contianer.objects.all()
+        return Container.objects.all()
     def resolve_courses_list(self, info):
         return Course.objects.all()
     def resolve_dummies_list(self, info):
@@ -449,8 +452,8 @@ class Query(graphene.ObjectType):
         return Solution.objects.all()
     def resolve_steps_list(self, info):
         return Step.objects.all()
-    def resolve_subscriptions_list(self, info):
-        return Subscription.objects.all()
+    # def resolve_subscriptions_list(self, info):
+    #     return Subscription.objects.all()
     def resolve_submissions_list(self, info):
         return Submission.objects.all()
     def resolve_teams_list(self, info):
@@ -464,9 +467,33 @@ class Query(graphene.ObjectType):
     def resolve_vulnerabilities_list(self, info):
         return Vulnerability.objects.all()
 
+class RandomType(graphene.ObjectType):
+    seconds = graphene.Int()
+    random_int = graphene.Int()
+
+class Subscription(graphene.ObjectType):
+    count_seconds = graphene.Int(up_to=graphene.Int())
+
+    random_int = graphene.Field(RandomType)
+
+    def resolve_count_seconds(root, info, up_to=5):
+        print("callled")
+        return Observable.interval(1000)\
+                         .map(lambda i: "{0}".format(i))\
+                         .take_while(lambda i: int(i) <= up_to)
+
+    def resolve_random_int(root, info):
+        return Observable.interval(1000).map(lambda i: RandomType(seconds=i, random_int=random.randint(0, 500)))
+
+    # subscribe_to_foo = graphene.Boolean()
+    
+    # def resolve_subscribe_to_foo(self, args, **kwargs):
+    #     return Observable.of(True)
+        
 schema = graphene.Schema(
     query=Query, 
     mutation=Mutations,
+    subscription=Subscription,
     types=[
         ApplicationType,
         ClusterType,
@@ -486,7 +513,7 @@ schema = graphene.Schema(
         SolutionType,
         StepType,
         ServiceType,
-        SubscriptionType,
+        # SubscriptionType,
         SubmissionType,
         TeamType,
         TopicType,

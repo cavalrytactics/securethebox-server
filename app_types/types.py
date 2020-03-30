@@ -20,7 +20,7 @@ from app_models.models import (
     Service, 
     Solution, 
 	Step,
-    Subscription, 
+    # Subscription, 
     Submission, 
 	Team,
     Topic, 
@@ -104,10 +104,10 @@ class StepType(MongoengineObjectType):
 	class Meta:
 		model = Step
 		interfaces = (relay.Node,)
-class SubscriptionType(MongoengineObjectType):
-	class Meta:
-		model = Subscription
-		interfaces = (relay.Node,)
+# class SubscriptionType(MongoengineObjectType):
+# 	class Meta:
+# 		model = Subscription
+# 		interfaces = (relay.Node,)
 class SubmissionType(MongoengineObjectType):
 	class Meta:
 		model = Submission
