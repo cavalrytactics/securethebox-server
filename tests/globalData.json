@@ -27,7 +27,8 @@
         "MONGODB_NAMESPACE",
         "STRIPE_API_VERSION",
         "STRIPE_PUBLISHABLE_KEY",
-        "STRIPE_SECRET_KEY"
+        "STRIPE_SECRET_KEY",
+        "GOOGLE_APPLICATION_CREDENTIALS"
     ],
     "googleProjectId": "securethebox-server",
     "googleKubernetesComputeZone": "us-central1-a",
