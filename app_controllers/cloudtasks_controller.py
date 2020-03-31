@@ -9,7 +9,9 @@ from google.protobuf import timestamp_pb2
 from typing import Tuple, List
 import json
 import uuid 
+
 """
+
 Enable API manually
 
 IAM Permissions:
@@ -19,6 +21,7 @@ Cloud Tasks Queue Admin
 Cloud Tasks Service Agent
 Cloud Tasks Task Deleter
 *Enable Domain Wide Delegation (Allows Service Account Requests)
+
 """
 
 
@@ -125,19 +128,20 @@ class CloudTasksController():
             queuePath = client.queue_path(
                 self.projectId, self.location, self.queueId)
             queue = {"name": queuePath}
-            print(queue)
+
             try:
                 client.create_queue(parent, queue)
                 return True
             except exceptions.GoogleAPICallError as error:
-                print(error)
                 if "Queue already exists" in str(error) or "The queue cannot be created because a queue with this name existed too recently" in str(error):
                     return True
         except:
+            print("fk")
             return False
 
     def pauseTaskQueue(self) -> bool:
         try:
+            print("bye")
             client = tasks_v2.CloudTasksClient()
             queuePath = client.queue_path(
                 self.projectId, self.location, self.queueId)
