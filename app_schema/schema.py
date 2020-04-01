@@ -477,25 +477,25 @@ class RandomType(graphene.ObjectType):
     random_int = graphene.Int()
 
 class Subscription(graphene.ObjectType):
-
     count_seconds = graphene.Int(up_to=graphene.Int())
     random_int = graphene.Field(RandomType)
-    stream = graphene.String()
+    stream_test = graphene.Int(up_to=graphene.Int())
 
-    def resolve_stream(root, info):
-        client = pymongo.MongoClient("mongodb+srv://"+os.environ["MONGODB_USER"]+":"+os.environ["MONGODB_PASSWORD"]+"@"+os.environ["MONGODB_CLUSTER"])
-        change_stream = client.changestream.collection.watch([{
-            '$match': {
-                'operationType': { '$in': ['update'] }
-            }
-        }])
-        for change in change_stream:
-            print(dumps(change))
-            print('') # for readability only
-            return Observable.interval(1000).map(lambda i: dumps(change))
-
-
-
+    def resolve_stream_test(root, info, up_to=5):
+        print("resolve_stream")
+        # client = pymongo.MongoClient("mongodb+srv://"+os.environ["MONGODB_USER"]+":"+os.environ["MONGODB_PASSWORD"]+"@"+os.environ["MONGODB_CLUSTER"])
+        # change_stream = client.changestream.collection.watch([{
+        #     '$match': {
+        #         'operationType': { '$in': ['update'] }
+        #     }
+        # }])
+        # for change in change_stream:
+        #     print(dumps(change))
+        #     print('') # for readability only
+        #     return Observable.interval(1000).map(lambda i: dumps(change))
+        return Observable.interval(1000)\
+                         .map(lambda i: "{0}".format(i))\
+                         .take_while(lambda i: int(i) <= up_to)
 
     def resolve_count_seconds(root, info, up_to=5):
         print("resolve_count_seconds")
@@ -506,8 +506,6 @@ class Subscription(graphene.ObjectType):
     def resolve_random_int(root, info):
         print("resolve_count_seconds")
         return Observable.interval(1000).map(lambda i: RandomType(seconds=i, random_int=random.randint(0, 500)))
-
-
         
 schema = graphene.Schema(
     query=Query, 
