@@ -477,15 +477,25 @@ class RandomType(graphene.ObjectType):
     random_int = graphene.Int()
 
 class Subscription(graphene.ObjectType):
+
+    count_seconds = graphene.Int(up_to=graphene.Int())
+    random_int = graphene.Field(RandomType)
+    stream = graphene.String()
+
     def resolve_stream(root, info):
-        client = pymongo.MongoClient(os.environ['CHANGE_STREAM_DB'])
-        change_stream = client.changestream.collection.watch()
+        client = pymongo.MongoClient("mongodb+srv://"+os.environ["MONGODB_USER"]+":"+os.environ["MONGODB_PASSWORD"]+"@"+os.environ["MONGODB_CLUSTER"])
+        change_stream = client.changestream.collection.watch([{
+            '$match': {
+                'operationType': { '$in': ['update'] }
+            }
+        }])
         for change in change_stream:
             print(dumps(change))
-            print('') # for readability onlk
-    count_seconds = graphene.Int(up_to=graphene.Int())
+            print('') # for readability only
+            return Observable.interval(1000).map(lambda i: dumps(change))
 
-    random_int = graphene.Field(RandomType)
+
+
 
     def resolve_count_seconds(root, info, up_to=5):
         print("resolve_count_seconds")

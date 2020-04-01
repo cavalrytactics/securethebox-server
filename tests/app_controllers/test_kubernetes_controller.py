@@ -296,27 +296,27 @@ def test_manageKubernetesServicePod_apply():
         c.setGoogleKubernetesComputeCluster(pytest.globalData["googleKubernetesComputeCluster"])
         assert c.manageKubernetesServicePod() == True
 
-def test_getKubernetesPodId():
-    loadGlobalData()
-    for x in range(30):
-        time.sleep(1)
-        print(x)
-    c.setUserName(pytest.globalData["userName"])
-    for service in pytest.globalData["serviceName_service"]:
-        c.setServiceName(service)
-        value, podId = c.getKubernetesPodId()
-        assert value == True
-        assert podId != "0"
+# def test_getKubernetesPodId():
+#     loadGlobalData()
+#     for x in range(30):
+#         time.sleep(1)
+#         print(x)
+#     c.setUserName(pytest.globalData["userName"])
+#     for service in pytest.globalData["serviceName_service"]:
+#         c.setServiceName(service)
+#         value, podId = c.getKubernetesPodId()
+#         assert value == True
+#         assert podId != "0"
 
-def test_getKubernetesPodStatus():
-    loadGlobalData()
-    c.setUserName(pytest.globalData["userName"])
-    for service in pytest.globalData["serviceName_service"]:
-        c.setServiceName(service)
-        value, podId = c.getKubernetesPodId()
-        c.setKubernetesPodId(podId)
-        value, podStatus = c.getkubernetesPodStatus()
-        assert value == True
+# def test_getKubernetesPodStatus():
+#     loadGlobalData()
+#     c.setUserName(pytest.globalData["userName"])
+#     for service in pytest.globalData["serviceName_service"]:
+#         c.setServiceName(service)
+#         value, podId = c.getKubernetesPodId()
+#         c.setKubernetesPodId(podId)
+#         value, podStatus = c.getkubernetesPodStatus()
+#         assert value == True
 
 def test_addAuthARecordInParentDNSManagedZone():
     loadGlobalData()

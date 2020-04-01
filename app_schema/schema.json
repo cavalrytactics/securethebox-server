@@ -914,6 +914,7 @@ type SubmissionTypeEdge {
 type Subscription {
   countSeconds(upTo: Int): Int
   randomInt: RandomType
+  stream: String
 }
 
 input TeamInput {
