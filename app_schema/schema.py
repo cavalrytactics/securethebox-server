@@ -1,4 +1,9 @@
 from rx import Observable
+# mongodb stream
+from bson.json_util import dumps
+import os 
+import pymongo
+# 
 import random
 import graphene
 from graphene.relay import Node
@@ -472,23 +477,27 @@ class RandomType(graphene.ObjectType):
     random_int = graphene.Int()
 
 class Subscription(graphene.ObjectType):
+    def resolve_stream(root, info):
+        client = pymongo.MongoClient(os.environ['CHANGE_STREAM_DB'])
+        change_stream = client.changestream.collection.watch()
+        for change in change_stream:
+            print(dumps(change))
+            print('') # for readability onlk
     count_seconds = graphene.Int(up_to=graphene.Int())
 
     random_int = graphene.Field(RandomType)
 
     def resolve_count_seconds(root, info, up_to=5):
-        print("callled")
+        print("resolve_count_seconds")
         return Observable.interval(1000)\
                          .map(lambda i: "{0}".format(i))\
                          .take_while(lambda i: int(i) <= up_to)
 
     def resolve_random_int(root, info):
+        print("resolve_count_seconds")
         return Observable.interval(1000).map(lambda i: RandomType(seconds=i, random_int=random.randint(0, 500)))
 
-    # subscribe_to_foo = graphene.Boolean()
-    
-    # def resolve_subscribe_to_foo(self, args, **kwargs):
-    #     return Observable.of(True)
+
         
 schema = graphene.Schema(
     query=Query, 
