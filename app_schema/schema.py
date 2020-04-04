@@ -1,9 +1,11 @@
-from rx import Observable
+from rx import Observable, Observer
+import datetime
+import time
 # mongodb stream
 from bson.json_util import dumps
-import os 
+import os
 import pymongo
-# 
+#
 import random
 import graphene
 from graphene.relay import Node
@@ -146,7 +148,7 @@ from app_mutations.scopes import (
     DeleteScopeMutation,
 )
 from app_mutations.services import (
-    CreateServiceMutation, 
+    CreateServiceMutation,
     UpdateServiceMutation,
     DeleteServiceMutation,
     UpdateServiceAddApplicationMutation,
@@ -198,6 +200,7 @@ from app_mutations.vulnerabilities import (
     DeleteVulnerabilityMutation,
 )
 
+
 class Mutations(graphene.ObjectType):
     create_application = CreateApplicationMutation.Field()
     create_category = CreateCategoryMutation.Field()
@@ -224,11 +227,11 @@ class Mutations(graphene.ObjectType):
     create_topic = CreateTopicMutation.Field()
     create_university = CreateUniversityMutation.Field()
     create_user = CreateUserMutation.Field()
-    create_vulnerability = CreateVulnerabilityMutation.Field() 
+    create_vulnerability = CreateVulnerabilityMutation.Field()
 
     update_application = UpdateApplicationMutation.Field()
     update_cluster = UpdateClusterMutation.Field()
-    update_company= UpdateCompanyMutation.Field()
+    update_company = UpdateCompanyMutation.Field()
     update_category = UpdateCategoryMutation.Field()
     update_competency = UpdateCompetencyMutation.Field()
     update_configuration = UpdateConfigurationMutation.Field()
@@ -281,6 +284,7 @@ class Mutations(graphene.ObjectType):
     delete_university = DeleteUniversityMutation.Field()
     delete_user = DeleteUserMutation.Field()
     delete_vulnerability = DeleteVulnerabilityMutation.Field()
+
 
 class Query(graphene.ObjectType):
     base = graphene.String()
@@ -341,11 +345,13 @@ class Query(graphene.ObjectType):
     users_list = graphene.List(UserType)
     vulnerabilities_list = graphene.List(VulnerabilityType)
 
-    application = graphene.Field(ApplicationType, ID=graphene.ID(required=True))
+    application = graphene.Field(
+        ApplicationType, ID=graphene.ID(required=True))
     cluster = graphene.Field(ClusterType, ID=graphene.ID(required=True))
     company = graphene.Field(CompanyType, ID=graphene.ID(required=True))
     container = graphene.Field(ContainerType, ID=graphene.ID(required=True))
-    configuration = graphene.Field(ConfigurationType, ID=graphene.ID(required=True))
+    configuration = graphene.Field(
+        ConfigurationType, ID=graphene.ID(required=True))
     credential = graphene.Field(CredentialType, ID=graphene.ID(required=True))
     category = graphene.Field(CategoryType, ID=graphene.ID(required=True))
     competency = graphene.Field(CompetencyType, ID=graphene.ID(required=True))
@@ -366,109 +372,157 @@ class Query(graphene.ObjectType):
     topic = graphene.Field(TopicType, ID=graphene.ID(required=True))
     university = graphene.Field(UniversityType, ID=graphene.ID(required=True))
     user = graphene.Field(UserType, ID=graphene.ID(required=True))
-    vulnerability = graphene.Field(VulnerabilityType, ID=graphene.ID(required=True))
+    vulnerability = graphene.Field(
+        VulnerabilityType, ID=graphene.ID(required=True))
 
     def resolve_application(root, info, ID):
         return Application.objects.get(pk=ID)
+
     def resolve_cluster(root, info, ID):
         return Cluster.objects.get(pk=ID)
+
     def resolve_company(root, info, ID):
         return Company.objects.get(pk=ID)
+
     def resolve_container(root, info, ID):
         return Container.objects.get(pk=ID)
+
     def resolve_configuration(root, info, ID):
         return Configuration.objects.get(pk=ID)
+
     def resolve_credential(root, info, ID):
         return Credential.objects.get(pk=ID)
+
     def resolve_category(root, info, ID):
         return Category.objects.get(pk=ID)
+
     def resolve_competency(root, info, ID):
         return Competency.objects.get(pk=ID)
+
     def resolve_course(root, info, ID):
         return Course.objects.get(pk=ID)
+
     def resolve_dummy(root, info, ID):
         return Dummy.objects.get(pk=ID)
+
     def resolve_job(root, info, ID):
         return Job.objects.get(pk=ID)
+
     def resolve_metric(root, info, ID):
         return Metric.objects.get(pk=ID)
+
     def resolve_problem(root, info, ID):
         return Problem.objects.get(pk=ID)
+
     def resolve_rank(root, info, ID):
         return Rank.objects.get(pk=ID)
+
     def resolve_report(root, info, ID):
         return Report.objects.get(pk=ID)
+
     def resolve_scope(root, info, ID):
         return Scope.objects.get(pk=ID)
+
     def resolve_service(root, info, ID):
         return Service.objects.get(pk=ID)
+
     def resolve_solution(root, info, ID):
         return Solution.objects.get(pk=ID)
+
     def resolve_step(root, info, ID):
         return Step.objects.get(pk=ID)
     # def resolve_subscription(root, info, ID):
     #     return Subscription.objects.get(pk=ID)
+
     def resolve_submission(root, info, ID):
         return Submission.objects.get(pk=ID)
+
     def resolve_team(root, info, ID):
         return Team.objects.get(pk=ID)
+
     def resolve_topic(root, info, ID):
         return Topic.objects.get(pk=ID)
+
     def resolve_university(root, info, ID):
         return University.objects.get(pk=ID)
+
     def resolve_user(root, info, ID):
         return User.objects.get(pk=ID)
+
     def resolve_vulnerability(root, info, ID):
         return Vulnerability.objects.get(pk=ID)
 
     def resolve_clusters_list(self, info):
         return Cluster.objects.all()
+
     def resolve_companies_list(self, info):
         return Company.objects.all()
+
     def resolve_configurations_list(self, info):
         return Configuration.objects.all()
+
     def resolve_credentials_list(self, info):
         return Credential.objects.all()
+
     def resolve_categories_list(self, info):
         return Category.objects.all()
+
     def resolve_competencies_list(self, info):
         return Competency.objects.all()
+
     def resolve_containers_list(self, info):
         return Container.objects.all()
+
     def resolve_courses_list(self, info):
         return Course.objects.all()
+
     def resolve_dummies_list(self, info):
         return Dummy.objects.all()
+
     def resolve_jobs_list(self, info):
         return Job.objects.all()
+
     def resolve_metrics_list(self, info):
         return Metric.objects.all()
+
     def resolve_problems_list(self, info):
         return Problem.objects.all()
+
     def resolve_ranks_list(self, info):
         return Rank.sobjects.all()
+
     def resolve_reports_list(self, info):
         return Report.objects.all()
+
     def resolve_scopes_list(self, info):
         return Scope.objects.all()
+
     def resolve_services_list(self, info):
         return Service.objects.all()
+
     def resolve_solutions_list(self, info):
         return Solution.objects.all()
+
     def resolve_steps_list(self, info):
         return Step.objects.all()
     # def resolve_subscriptions_list(self, info):
     #     return Subscription.objects.all()
+
     def resolve_submissions_list(self, info):
         return Submission.objects.all()
+
     def resolve_teams_list(self, info):
         return Team.objects.all()
+
     def resolve_topics_list(self, info):
         return Topic.objects.all()
+
     def resolve_universities_list(self, info):
         return University.objects.all()
+
     def resolve_users_list(self, info):
         return User.objects.all()
+
     def resolve_vulnerabilities_list(self, info):
         return Vulnerability.objects.all()
 
@@ -476,26 +530,88 @@ class RandomType(graphene.ObjectType):
     seconds = graphene.Int()
     random_int = graphene.Int()
 
+class ScoringType(graphene.ObjectType):
+    service = graphene.String()
+    timestamp = graphene.String()
+    result = graphene.String()
+
+class CustomObserver(Observer):
+    def on_next(self, value):
+        print("next",value)
+        client = pymongo.MongoClient(
+            "mongodb+srv://"+os.environ["MONGODB_USER"]+":"+os.environ["MONGODB_PASSWORD"]+"@"+os.environ["MONGODB_CLUSTER"])
+        with client.production_securethebox.subscriptions.watch() as stream:
+            while stream.alive:
+                change = stream.try_next()
+                if change is not None:
+                    self.service = change["fullDocument"]["service"]
+                    self.result = change["fullDocument"]["result"]
+                    break
+                else:
+                    break
+        
+    def on_error(self,error):
+        print("error",error)
+    def on_completed(self):
+        print("completed")
+
+
 class Subscription(graphene.ObjectType):
     count_seconds = graphene.Int(up_to=graphene.Int())
     random_int = graphene.Field(RandomType)
-    stream_test = graphene.Int(up_to=graphene.Int())
+    stream_test = graphene.Field(ScoringType)
+    def __init__(self):
+        self.service = "" 
+        self.results = "" 
 
-    def resolve_stream_test(root, info, up_to=5):
+    def setResults(self, results):
+        self.results = results
+
+    def setService(self, service):
+        self.service = service
+
+    def resolve_stream_test(root, info):
         print("resolve_stream")
-        # client = pymongo.MongoClient("mongodb+srv://"+os.environ["MONGODB_USER"]+":"+os.environ["MONGODB_PASSWORD"]+"@"+os.environ["MONGODB_CLUSTER"])
-        # change_stream = client.changestream.collection.watch([{
-        #     '$match': {
-        #         'operationType': { '$in': ['update'] }
-        #     }
-        # }])
-        # for change in change_stream:
-        #     print(dumps(change))
-        #     print('') # for readability only
-        #     return Observable.interval(1000).map(lambda i: dumps(change))
-        return Observable.interval(1000)\
-                         .map(lambda i: "{0}".format(i))\
-                         .take_while(lambda i: int(i) <= up_to)
+        thisSub = Subscription()
+        client = pymongo.MongoClient(
+                    "mongodb+srv://"+os.environ["MONGODB_USER"]+":"+os.environ["MONGODB_PASSWORD"]+"@"+os.environ["MONGODB_CLUSTER"])
+        class Sub():
+            def __init__(self):
+                self.thisObservable = Observable.interval(5000)\
+                        .map(lambda i: ScoringType(
+                            service=thisSub.service,
+                            timestamp=str(datetime.datetime.now()),
+                            result=thisSub.results))
+
+        class CustomObserver(Observer):
+            def on_next(self,value):
+                loadService = ""
+                try:
+                    with client.production_securethebox.subscriptions.watch(
+                        batch_size=100,
+                        max_await_time_ms=2500
+                    ) as stream:
+                        while stream.alive:
+                            change = stream.try_next()
+                            if change is not None:
+                                loadService = change["fullDocument"]["service"]
+                                time.sleep(5)
+                                break
+                            else:
+                                loadService = "fail inner"
+                                time.sleep(5)
+                                continue
+                except pymongo.errors.PyMongoError:
+                    print("stream error")
+                    time.sleep(5)
+                thisSub.setService(loadService)
+            def on_error(self,error):
+                thisSub.setService("error")
+            def on_completed(self):
+                thisSub.setService("completed")
+        subSub = Sub().thisObservable
+        subSub.subscribe(CustomObserver())
+        return subSub 
 
     def resolve_count_seconds(root, info, up_to=5):
         print("resolve_count_seconds")
@@ -505,10 +621,12 @@ class Subscription(graphene.ObjectType):
 
     def resolve_random_int(root, info):
         print("resolve_count_seconds")
-        return Observable.interval(1000).map(lambda i: RandomType(seconds=i, random_int=random.randint(0, 500)))
-        
+        return Observable.interval(1000)\
+                         .map(lambda i: RandomType(seconds=i, random_int=random.randint(0, 500)))
+
+
 schema = graphene.Schema(
-    query=Query, 
+    query=Query,
     mutation=Mutations,
     subscription=Subscription,
     types=[
@@ -537,5 +655,5 @@ schema = graphene.Schema(
         UserType,
         UniversityType,
         VulnerabilityType
-        ]
-    )
+    ]
+)
